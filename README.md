@@ -21,4 +21,5 @@ Example: ./validator.py -f "nessusfile.nessus"
 
 ### Dependencies
 
-Currently validator has no dependencies outside of what ships with a standard python installation.
+Currently validator reuired NMAP to be installed.
+The tool is designed to run in Kali, as well as testing in Kali.
