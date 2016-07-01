@@ -76,16 +76,17 @@ def dns_cache_snoop(ipaddress,port):
     else:
         print "Host not vulnerable, false positive found!"
 
-# Find All hosts in the scan and List the vulnerabilities for each scan
-for host in nessus.iter('ReportHost'):
-    ipaddress = host.get('name')
-    for issue in host.iter('ReportItem'):
-        port = issue.get('port')
-        if issue.get('pluginName') == 'SMB Signing Disabled':
-            smb_sign_disabled(ipaddress)
-        elif issue.get('pluginName') == 'DNS Server Cache Snooping Remote Information Disclosure':
-            protocol = issue.get('protocol')
-            dns_cache_snoop(ipaddress,port)
+# Find All hosts in the file and validate what vulnerabilities we can for each!
+if args.all or args.file:
+    for host in nessus.iter('ReportHost'):
+        ipaddress = host.get('name')
+        for issue in host.iter('ReportItem'):
+            port = issue.get('port')
+            if issue.get('pluginName') == 'SMB Signing Disabled':
+                smb_sign_disabled(ipaddress)
+            elif issue.get('pluginName') == 'DNS Server Cache Snooping Remote Information Disclosure':
+                protocol = issue.get('protocol')
+                dns_cache_snoop(ipaddress,port)
 
 
 # Write all changes back to the orginal Nessus file
