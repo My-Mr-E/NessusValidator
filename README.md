@@ -12,6 +12,13 @@ The following vulnerabilities are currently supported by validator:
 
 
 
+### HOW-TO
+
+Example: ./validator.py -f "nessusfile.nessus"
+
+-f Nessus file input
+
+
 ### Dependencies
 
 Currently validator has no dependencies outside of what ships with a standard python installation.
