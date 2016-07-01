@@ -9,6 +9,7 @@ The following vulnerabilities are currently supported by validator:
 
 * SMB Signing Disabled
 * DNS Server allows cache snooping
+* MS08-067
 
 
 
