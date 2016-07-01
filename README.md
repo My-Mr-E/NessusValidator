@@ -24,7 +24,7 @@ The following vulnerabilities are currently supported by validator:
 ### HOW-TO
 
 1. Download or clone validator.
-2. Run setup.py (This is do a git clone on testssl)
+2. Run setup.py
 3. Validate easier!
 
 
@@ -39,4 +39,4 @@ Currently validator requires NMAP to be installed.
 The setup file will download TestSSL and place it in the correct directory.
 
 
-**The tool is designed to run in Kali, as well as testing in Kali**
+**The tool is designed to run in Kali, as well as tested in Kali**
