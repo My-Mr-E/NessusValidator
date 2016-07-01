@@ -102,18 +102,22 @@ def ms08_067(ipaddress,port):
         print "Host not vulnerable, false positive found!"
 
 
-# Check protocol used, test for DNS cache snooping - If vulnerable add to Nessus file
+# Check for Self Signed Certificate - If vulnerable add to Nessus file
 def ssl_self_signed(ipaddress,port):
-    self_sign_pattern = re.compile(r"code:\s(18)")
+    self_sign_pattern1 = re.compile(r"code:\s(18)")
+    self_sign_pattern2 = re.compile(r"code:\s(19)")
 
 # Output showing that its doing things...
     print "Using s_client to test for a self signed certificate " + ipaddress + " port " + port + "."
-    command = subprocess.Popen(["openssl","s_client","-showcerts","-connect", str(ipaddress) + ":" + str(port) + " </dev/null"], stdout=subprocess.PIPE)
+    # Command running s_client then closing the connection
+    cmd = "echo 'Q'|openssl s_client -showcerts -connect {0}:{1}".format(str(ipaddress),str(port))
+    command = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     output,err = command.communicate()
 
-    self_sign_match = re.findall(self_sign_pattern, output)
+    self_sign_match1 = re.findall(self_sign_pattern1, output) # Self signed
+    self_sign_match2 = re.findall(self_sign_pattern2, output) # Signed CA in chain
     plug_out = issue.findall('plugin_output')
-    if self_sign_match:
+    if self_sign_match1 or self_sign_match2:
         # Checking if Nessus plugin output already exists, if so, replace it! If not create a new plugin_output.
         if plug_out:
             for plug in plug_out:
