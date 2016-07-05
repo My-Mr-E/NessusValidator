@@ -1,6 +1,6 @@
 import subprocess,re
 
-# Cleans the TestSSL output data before inserting into the Nessus file
+# Cleans the output data of certain vulnerability checks before inserting into the Nessus file
 sweep_up1 = re.compile(r"&gt;|&lt;|(\[0;33m)|(\[0;31m)|<|>|-|\/bin.*|\"|\'")
 
 
@@ -14,6 +14,31 @@ def SubElementWithText(parent, tag, text):
 
 # Class containing all SSL/TLS Validations
 class SSLTLSChecks:
+    # Check for TLS CRIME vulnerability - If vulnerable add to Nessus file
+    def tls_crime(self, ipaddress, port, issue):
+        freak_pattern = re.compile(r"VULNERABLE\s\(NOT\sok\)")
+
+        # Output showing that its doing things...
+        print "Using testssl.sh to test for TLS CRIME on " + ipaddress + " port " + port + "."
+        # Command running TestSSL then killing the proccess in case of a hang.
+        cmd = "./testssl.sh/testssl.sh --quiet --color 0 -C {0}:{1} & sleep 6;kill $!".format(str(ipaddress), str(port))
+        command = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, err = command.communicate()
+        output1 = re.sub(sweep_up1, '', output)
+        freak_match = re.findall(freak_pattern, output1)
+        plug_out = issue.findall('plugin_output')
+        if freak_match:
+            # Checking if Nessus plugin output already exists, if so, replace it! If not create a new plugin_output.
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = output1
+            else:
+                SubElementWithText(issue, 'plugin_output', output1)
+
+            print "Host is VULNERABLE to TLS CRIME!"
+        else:
+            print "Host not vulnerable, false positive found!"
+
     # Check for RC4 Ciphers - If vulnerable add to Nessus file
     def rc4_ciphers(self, ipaddress, port, issue):
         freak_pattern = re.compile(r"VULNERABLE\s\(NOT\sok\)")

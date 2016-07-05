@@ -1,5 +1,7 @@
 import subprocess,re
 
+# Cleans the output data of certain vulnerability checks before inserting into the Nessus file
+sweep_up1 = re.compile(r"&gt;|&lt;|(\[0;33m)|(\[0;31m)|<|>|-|\/bin.*|\"|\'")
 
 # Create an XML SubElement with sselected text inside
 def SubElementWithText(parent, tag, text):
@@ -11,6 +13,30 @@ def SubElementWithText(parent, tag, text):
 
 
 class MiscValidations:
+    # Check for HTTP TRACE method - If vulnerable add to Nessus file
+    def http_trace(self, ipaddress, port, issue):
+        http_ok_pattern = re.compile(r"HTTP\/[0-9].[0-9]\s(200\sOK)")
+
+        # Output showing that its doing things...
+        print "Using cURL to test for HTTP TRACE method on " + ipaddress + " port " + port + "."
+        # Command running onesixtyone then killing the proccess in case of a hang.
+        cmd = "curl --insecure -v -X TRACE {0}:{1} & sleep 6;kill $!".format(str(ipaddress), str(port))
+        command = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output, err = command.communicate()
+        output1 = re.sub(sweep_up1, '', output)
+        http_ok_match = re.findall(http_ok_pattern, output1)
+        plug_out = issue.findall('plugin_output')
+        print output1
+        if http_ok_match:
+            # Checking if Nessus plugin output already exists, if so, replace it! If not create a new plugin_output.
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = output1
+            else:
+                SubElementWithText(issue, 'plugin_output', output1)
+            print "Host has HTTP TRACE method ENABLED!"
+        else:
+            print "Host not vulnerable, false positive found!"
 
     # Check for default community name public - If vulnerable add to Nessus file
     def snmp_default_public(self, ipaddress, issue):

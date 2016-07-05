@@ -58,6 +58,8 @@ if args.file and not args.testssl and not args.timestamp:
                 MISC.tcpts_response(ipaddress, issue)
             elif issue.get('pluginID') == '41028':  # SNMP has default community string Public
                 MISC.snmp_default_public(ipaddress, issue)
+            elif issue.get('pluginID') == '11213':  # HTTP TRACE method enabled
+                MISC.http_trace(ipaddress, port, issue)
 
 
             # SSL Vulnerabilities
@@ -101,6 +103,8 @@ elif args.file and args.testssl:
                 SSL.ssl_freak(ipaddress, port, issue)
             elif issue.get('pluginID') == '65821':  # Server uses RC4 Cipher Suites
                 SSL.rc4_ciphers(ipaddress, port, issue)
+            elif issue.get('pluginID') == '62565':  # TLS CRIME Vulnerability
+                SSL.rc4_ciphers(ipaddress, port, issue)
 
 # Only test TCP Timestamp Responses
 elif args.file and args.timestamp:
@@ -114,9 +118,3 @@ elif args.file and args.timestamp:
 
 # Write all changes back to the orginal Nessus file
 nessus.write(args.file)
-
-
-
-
-
-
