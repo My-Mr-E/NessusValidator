@@ -30,10 +30,13 @@ The following vulnerabilities are currently supported by validator:
 
 
 Example: ./validator.py -f "nessusfile.nessus"
+
 Example: ./validator.py -f "nessusfile.nessus" --timestamp
 
 -f "Nessus file input"
+
 --testssl "Perform only SSL/TLS validations"
+
 --timestamp "Perform only TCP Timestamp Response validations"
 
 
