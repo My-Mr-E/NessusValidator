@@ -18,6 +18,7 @@ The following vulnerabilities are currently supported by validator:
 * SSL LOGJAM
 * SSL FREAK
 * TCP Timestamp Supported/TCP Timestamp Response
+* SNMP Agent Default Community Name (public)
 
 
 
@@ -33,10 +34,25 @@ Example: ./validator.py -f "nessusfile.nessus"
 -f Nessus file input
 
 
-### Dependencies
+### TO-DO
 
-Currently validator requires NMAP to be installed.
+* Continue adding validations
+* Add the ability to automatically remove false positives
+* Add the ability to create a host list
+* Add the ability to export validations to a different file
+* Add selective validation
+* Probably a lot more I'm forgetting...
+
+
+
+### Dependencies
 The setup file will download TestSSL and place it in the correct directory.
 
+Additional Requirements:
 
-**The tool is designed to run in Kali, as well as tested in Kali**
+* NMAP
+* onesixtyone
+* hping3
+
+
+**The tool is designed to run in Kali 2.0, as well as tested in Kali 2.0**

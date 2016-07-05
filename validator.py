@@ -130,6 +130,31 @@ def ssl_self_signed(ipaddress,port):
     else:
         print "Host not vulnerable, false positive found!"
 
+# Check for default community name public - If vulnerable add to Nessus file
+def snmp_default_public(ipaddress):
+    ip_address_pattern = re.compile(r"[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}")
+
+# Output showing that its doing things...
+    print "Using onesixtyone to test for default community name public on " + ipaddress + " port 161."
+    # Command running onesixtyone then killing the proccess in case of a hang.
+    cmd = "onesixtyone {0} public".format(str(ipaddress))
+    command = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    output, err = command.communicate()
+    ip_address_match = re.findall(ip_address_pattern, output)
+    plug_out = issue.findall('plugin_output')
+    print output
+    if ip_address_match:
+        # Checking if Nessus plugin output already exists, if so, replace it! If not create a new plugin_output.
+        if plug_out:
+            for plug in plug_out:
+                plug.text = output
+        else:
+            SubElementWithText(issue, 'plugin_output', output)
+        print "Host has SNMP DEFAULT community string PUBLIC!"
+    else:
+        print "Host not vulnerable, false positive found!"
+
+
 # Check for SSLv3 and/or SSLv2 - If vulnerable add to Nessus file
 def ssl_v2v3(ipaddress,port):
     ssl_v2v3_pattern = re.compile(r"SSLv3\s+offered\s\(NOT\sok\)|SSLv2\s+offered\s\(NOT\sok\)")
@@ -289,7 +314,7 @@ def tcpts_response(ipaddress):
     tcpts_pattern = re.compile(r"tcpts=([1-9][0-9]*)")
 
 # Output showing that its doing things...
-    print "Using hping3 to test for TCP Timestamp Responses on " + ipaddress + " port " + port + "."
+    print "Using hping3 to test for TCP Timestamp Responses on " + ipaddress + " port 80 and 443."
     # Command running hping3 on port 80.
     cmd = "hping3 {0} -p 80 -S --tcp-timestamp -c 1".format(str(ipaddress))
     command = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -324,7 +349,7 @@ def tcpts_response(ipaddress):
 
 
 # Find All hosts in the file and validate what vulnerabilities we can for each!
-if args.all or args.file:
+if args.file:
     for host in nessus.iter('ReportHost'):
         ipaddress = host.get('name')
         for issue in host.iter('ReportItem'):
@@ -346,8 +371,11 @@ if args.all or args.file:
 # Misc Vulnerabilities
             elif issue.get('pluginID') == '25220':  # TCP Timestamp Supported
                 tcpts_response(ipaddress)
+            elif issue.get('pluginID') == '41028':  # SNMP has default community string Public
+                snmp_default_public(ipaddress)
 
-# SSL Vulnerabilities
+
+            # SSL Vulnerabilities
             elif issue.get('pluginID') == '57582':  # SSL Certificate is Self Signed
                 ssl_self_signed(ipaddress, port)
             elif issue.get('pluginID') == '78479':  # SSL Server vulnerable to SSL POODLE
@@ -358,32 +386,32 @@ if args.all or args.file:
                 sslv2_DROWN(ipaddress, port)
             elif issue.get('pluginID') == '20007':  # SSL Version 2 and/or 3 enabled
                 ssl_v2v3(ipaddress, port)
-            elif issue.get('pluginID') == '83738' or '83875':  # SSL Server vulnerable to LOGJAM
+            elif issue.get('pluginID') == '83738' or issue.get('pluginID') == '83875':  # SSL Server vulnerable to LOGJAM
                 ssl_logjam(ipaddress, port)
             elif issue.get('pluginID') == '81606':  # SSL Server vulnerable to FREAK
                 ssl_freak(ipaddress, port)
 
 
 # Only validate SSL Vulnerabilities
-elif args.testssl:
-    for host in nessus.iter('ReportHost'):
-        ipaddress = host.get('name')
-        for issue in host.iter('ReportItem'):
-            port = issue.get('port')
-            if issue.get('pluginID') == '57582':  # SSL Certificate is Self Signed
-                ssl_self_signed(ipaddress, port)
-            elif issue.get('pluginID') == '78479':  # SSL Server vulnerable to SSL POODLE
-                ssl_poodle(ipaddress, port)
-            elif issue.get('pluginID') == '35291':  # SSL Certificate uses weak signature algorithms
-                cert_weak_algor(ipaddress, port)
-            elif issue.get('pluginID') == '89058':  # SSL Server vulnerable to SSL DROWN
-                sslv2_DROWN(ipaddress, port)
-            elif issue.get('pluginID') == '20007':  # SSL Version 2 and/or 3 enabled
-                ssl_v2v3(ipaddress, port)
-            elif issue.get('pluginID') == '83738' or '83875':  # SSL Server vulnerable to LOGJAM
-                ssl_logjam(ipaddress, port)
-            elif issue.get('pluginID') == '81606':  # SSL Server vulnerable to FREAK
-                ssl_freak(ipaddress, port)
+# elif args.testssl:
+#     for host in nessus.iter('ReportHost'):
+#         ipaddress = host.get('name')
+#         for issue in host.iter('ReportItem'):
+#             port = issue.get('port')
+#             if issue.get('pluginID') == '57582':  # SSL Certificate is Self Signed
+#                 ssl_self_signed(ipaddress, port)
+#             elif issue.get('pluginID') == '78479':  # SSL Server vulnerable to SSL POODLE
+#                 ssl_poodle(ipaddress, port)
+#             elif issue.get('pluginID') == '35291':  # SSL Certificate uses weak signature algorithms
+#                 cert_weak_algor(ipaddress, port)
+#             elif issue.get('pluginID') == '89058':  # SSL Server vulnerable to SSL DROWN
+#                 sslv2_DROWN(ipaddress, port)
+#             elif issue.get('pluginID') == '20007':  # SSL Version 2 and/or 3 enabled
+#                 ssl_v2v3(ipaddress, port)
+#             elif issue.get('pluginID') == '83738' or '83875':  # SSL Server vulnerable to LOGJAM
+#                 ssl_logjam(ipaddress, port)
+#             elif issue.get('pluginID') == '81606':  # SSL Server vulnerable to FREAK
+#                 ssl_freak(ipaddress, port)
 # Write all changes back to the orginal Nessus file
 nessus.write(args.file)
 
