@@ -8,17 +8,18 @@ Validator is designed to automatically read in a .nessus file exported from a Ne
 The following vulnerabilities are currently supported by validator:
 
 * SMB Signing Disabled
-* DNS Server allows cache snooping
+* DNS Server Allows Cache Snooping
 * MS08-067
 * SSL Certificate is Self Signed
 * SSL POODLE
-* SSL Certificate uses weak signature algorithms
+* SSL Certificate uses Weak Signature Algorithms
 * SSL DROWN
-* SSL Version 2 and/or 3 enabled
+* SSL Version 2 and/or 3 Enabled
 * SSL LOGJAM
 * SSL FREAK
 * TCP Timestamp Supported/TCP Timestamp Response
 * SNMP Agent Default Community Name (public)
+* SSL RC4 Cipher Suites Enabled
 
 
 
@@ -47,6 +48,7 @@ Example: ./validator.py -f "nessusfile.nessus" --timestamp
 * Add the ability to create a host list
 * Add the ability to export validations to a different file
 * Add selective validation
+* Multi-thread the validations to speed the process
 * Probably a lot more I'm forgetting...
 
 

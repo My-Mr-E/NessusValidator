@@ -75,6 +75,8 @@ if args.file and not args.testssl and not args.timestamp:
                 SSL.ssl_logjam(ipaddress, port, issue)
             elif issue.get('pluginID') == '81606':  # SSL Server vulnerable to FREAK
                 SSL.ssl_freak(ipaddress, port, issue)
+            elif issue.get('pluginID') == '65821':  # Server uses RC4 Cipher Suites
+                SSL.rc4_ciphers(ipaddress, port, issue)
 
 
 # Only validate SSL Vulnerabilities
@@ -97,6 +99,8 @@ elif args.file and args.testssl:
                 SSL.ssl_logjam(ipaddress, port, issue)
             elif issue.get('pluginID') == '81606':  # SSL Server vulnerable to FREAK
                 SSL.ssl_freak(ipaddress, port, issue)
+            elif issue.get('pluginID') == '65821':  # Server uses RC4 Cipher Suites
+                SSL.rc4_ciphers(ipaddress, port, issue)
 
 # Only test TCP Timestamp Responses
 elif args.file and args.timestamp:
