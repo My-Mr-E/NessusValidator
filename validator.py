@@ -47,7 +47,7 @@ if args.file and not args.testssl and not args.timestamp:
 # DNS Vulnerabilities
             elif issue.get('pluginID') == '12217':  # DNS Server allows cache snooping
                 protocol = issue.get('protocol')
-                DNS.dns_cache_snoop(ipaddress,port, issue)
+                DNS.dns_cache_snoop(protocol, ipaddress,port, issue)
 
 # Microsoft Vulnerabilities
             elif issue.get('pluginID') == '34477':  # MS08-067

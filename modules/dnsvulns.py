@@ -10,7 +10,7 @@ def SubElementWithText(parent, tag, text):
 
 class DNSVulns:
     # Check protocol used, test for DNS cache snooping - If vulnerable add to Nessus file
-    def dns_cache_snoop(self, ipaddress, port, issue):
+    def dns_cache_snoop(self, protocol, ipaddress, port, issue):
         snoop_number_pattern = re.compile(r"dns-cache-snoop:\s([1-9]+)\s")
 
         # Output showing that its doing things...
