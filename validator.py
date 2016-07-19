@@ -62,10 +62,10 @@ if args.file and not args.testssl and not args.timestamp:
                 MISC.http_trace(ipaddress, port, issue)
 
 
-            # SSL Vulnerabilities
+# SSL Vulnerabilities
             elif issue.get('pluginID') == '57582':  # SSL Certificate is Self Signed
                 SSL.ssl_self_signed(ipaddress, port, issue)
-            elif issue.get('pluginID') == '78479':  # SSL Server vulnerable to SSL POODLE
+            elif issue.get('pluginID') == '78479' or issue.get('pluginID') == '80035':  # SSL/TLS Server vulnerable to SSL/TLS POODLE
                 SSL.ssl_poodle(ipaddress, port, issue)
             elif issue.get('pluginID') == '35291':  # SSL Certificate uses weak signature algorithms
                 SSL.cert_weak_algor(ipaddress, port, issue)
@@ -89,7 +89,7 @@ elif args.file and args.testssl:
             port = issue.get('port')
             if issue.get('pluginID') == '57582':  # SSL Certificate is Self Signed
                 SSL.ssl_self_signed(ipaddress, port, issue)
-            elif issue.get('pluginID') == '78479':  # SSL Server vulnerable to SSL POODLE
+            elif issue.get('pluginID') == '78479' or issue.get('pluginID') == '80035':  # SSL/TLS Server vulnerable to SSL/TLS POODLE
                 SSL.ssl_poodle(ipaddress, port, issue)
             elif issue.get('pluginID') == '35291':  # SSL Certificate uses weak signature algorithms
                 SSL.cert_weak_algor(ipaddress, port, issue)
