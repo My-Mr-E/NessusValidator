@@ -171,7 +171,7 @@ class SSLTLSChecks:
         ssl_v2_drown_pattern = re.compile(r"vulnerable\s\(NOT\sok\)")
 
         # Output showing that its doing things...
-        print "Using testssl.sh to test for SSL Poodle " + ipaddress + " port " + port + "."
+        print "Using testssl.sh to test for SSL DROWN " + ipaddress + " port " + port + "."
         # Command running TestSSL then killing the proccess in case of a hang.
         cmd = "./testssl.sh/testssl.sh --quiet --color 0 -D {0}:{1} & sleep {2};kill $!".format(str(ipaddress), str(port), str(timeout))
         command = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -195,7 +195,7 @@ class SSLTLSChecks:
         ssl_v2v3_pattern = re.compile(r"SSLv3\s+offered\s\(NOT\sok\)|SSLv2\s+offered\s\(NOT\sok\)")
 
         # Output showing that its doing things...
-        print "Using testssl.sh to test for SSL Poodle " + ipaddress + " port " + port + "."
+        print "Using testssl.sh to test for SSLv2 or SSLv3 " + ipaddress + " port " + port + "."
         # Command running TestSSL then killing the proccess in case of a hang.
         cmd = "./testssl.sh/testssl.sh --quiet --color 0 -p {0}:{1} & sleep {2};kill $!".format(str(ipaddress), str(port), str(timeout))
         command = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
