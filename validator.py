@@ -13,7 +13,7 @@ parser.add_argument('-f','--file', help='Input Nessus File',required=True)
 # parser.add_argument('-a','--all',help='Run all validations',action="store_true",default=False,required=False)
 parser.add_argument('--testssl',help='Run validations for SSL/TLS vulnerabilities',action="store_true",default=False,required=False)
 parser.add_argument('--timestamp',help='Validate TCP Timestamp Responses',action="store_true",default=False,required=False)
-# parser.add_argument('--timeout',help='Set the timeout for tests that tend to hang up',action="store_true",default=False,required=False)
+parser.add_argument('--timeout',help='Set the timeout for tests that tend to hang up',default=6,required=False)
 args = parser.parse_args()
 
 # Parse Nessus file with Element Tree
@@ -24,6 +24,10 @@ nessus_root = nessus.getroot()
 
 # Testing XML Parse - Printing the root tag of the Nessus file
 print nessus_root.tag
+
+
+# Timeout variable
+timeout = args.timeout
 
 # Initialize Validation Classes
 SSL = ssltlsvulns.SSLTLSChecks()
@@ -59,26 +63,26 @@ if args.file and not args.testssl and not args.timestamp:
             elif issue.get('pluginID') == '41028':  # SNMP has default community string Public
                 MISC.snmp_default_public(ipaddress, issue)
             elif issue.get('pluginID') == '11213':  # HTTP TRACE method enabled
-                MISC.http_trace(ipaddress, port, issue)
+                MISC.http_trace(ipaddress, port, issue, timeout)
 
 
 # SSL Vulnerabilities
             elif issue.get('pluginID') == '57582':  # SSL Certificate is Self Signed
-                SSL.ssl_self_signed(ipaddress, port, issue)
+                SSL.ssl_self_signed(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '78479' or issue.get('pluginID') == '80035':  # SSL/TLS Server vulnerable to SSL/TLS POODLE
-                SSL.ssl_poodle(ipaddress, port, issue)
+                SSL.ssl_poodle(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '35291':  # SSL Certificate uses weak signature algorithms
-                SSL.cert_weak_algor(ipaddress, port, issue)
+                SSL.cert_weak_algor(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '89058':  # SSL Server vulnerable to SSL DROWN
-                SSL.sslv2_DROWN(ipaddress, port, issue)
+                SSL.sslv2_DROWN(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '20007':  # SSL Version 2 and/or 3 enabled
-                SSL.ssl_v2v3(ipaddress, port, issue)
+                SSL.ssl_v2v3(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '83738' or issue.get('pluginID') == '83875':  # SSL Server vulnerable to LOGJAM
-                SSL.ssl_logjam(ipaddress, port, issue)
+                SSL.ssl_logjam(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '81606':  # SSL Server vulnerable to FREAK
-                SSL.ssl_freak(ipaddress, port, issue)
+                SSL.ssl_freak(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '65821':  # Server uses RC4 Cipher Suites
-                SSL.rc4_ciphers(ipaddress, port, issue)
+                SSL.rc4_ciphers(ipaddress, port, issue, timeout)
 
 
 # Only validate SSL Vulnerabilities
@@ -88,23 +92,23 @@ elif args.file and args.testssl:
         for issue in host.iter('ReportItem'):
             port = issue.get('port')
             if issue.get('pluginID') == '57582':  # SSL Certificate is Self Signed
-                SSL.ssl_self_signed(ipaddress, port, issue)
+                SSL.ssl_self_signed(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '78479' or issue.get('pluginID') == '80035':  # SSL/TLS Server vulnerable to SSL/TLS POODLE
-                SSL.ssl_poodle(ipaddress, port, issue)
+                SSL.ssl_poodle(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '35291':  # SSL Certificate uses weak signature algorithms
-                SSL.cert_weak_algor(ipaddress, port, issue)
+                SSL.cert_weak_algor(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '89058':  # SSL Server vulnerable to SSL DROWN
-                SSL.sslv2_DROWN(ipaddress, port, issue)
+                SSL.sslv2_DROWN(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '20007':  # SSL Version 2 and/or 3 enabled
-                SSL.ssl_v2v3(ipaddress, port, issue)
+                SSL.ssl_v2v3(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '83738' or issue.get('pluginID') == '83875':  # SSL Server vulnerable to LOGJAM
-                SSL.ssl_logjam(ipaddress, port, issue)
+                SSL.ssl_logjam(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '81606':  # SSL Server vulnerable to FREAK
-                SSL.ssl_freak(ipaddress, port, issue)
+                SSL.ssl_freak(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '65821':  # Server uses RC4 Cipher Suites
-                SSL.rc4_ciphers(ipaddress, port, issue)
+                SSL.rc4_ciphers(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '62565':  # TLS CRIME Vulnerability
-                SSL.rc4_ciphers(ipaddress, port, issue)
+                SSL.rc4_ciphers(ipaddress, port, issue, timeout)
 
 # Only test TCP Timestamp Responses
 elif args.file and args.timestamp:

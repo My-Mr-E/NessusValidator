@@ -14,19 +14,18 @@ def SubElementWithText(parent, tag, text):
 
 class MiscValidations:
     # Check for HTTP TRACE method - If vulnerable add to Nessus file
-    def http_trace(self, ipaddress, port, issue):
+    def http_trace(self, ipaddress, port, issue, timeout):
         http_ok_pattern = re.compile(r"HTTP\/[0-9].[0-9]\s(200\sOK)")
 
         # Output showing that its doing things...
         print "Using cURL to test for HTTP TRACE method on " + ipaddress + " port " + port + "."
         # Command running onesixtyone then killing the proccess in case of a hang.
-        cmd = "curl --insecure -v -X TRACE {0}:{1} & sleep 6;kill $!".format(str(ipaddress), str(port))
+        cmd = "curl --insecure -v -X TRACE {0}:{1} & sleep {2};kill $!".format(str(ipaddress), str(port), str(timeout))
         command = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, err = command.communicate()
         output1 = re.sub(sweep_up1, '', output)
         http_ok_match = re.findall(http_ok_pattern, output1)
         plug_out = issue.findall('plugin_output')
-        print output1
         if http_ok_match:
             # Checking if Nessus plugin output already exists, if so, replace it! If not create a new plugin_output.
             if plug_out:
