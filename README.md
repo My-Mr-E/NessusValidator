@@ -54,12 +54,19 @@ Example: ./validator.py -f "nessusfile.nessus"
 Example: ./validator.py -f "nessusfile.nessus" --listhost
 
   -h, --help            show this help message and exit
+  
   -f FILE, --file FILE  Input Nessus File
+  
   --testssl             Run validations for SSL/TLS vulnerabilities
+  
   --timestamp           Validate TCP Timestamp Responses
+  
   --timeout TIMEOUT     Set the timeout for tests that tend to hang up
+  
   --removeinfo          Remove Informational findings from the Nessus file
+  
   --listhost            Prints a list of live hosts from scan results
+  
 
 
 ## TO-DO
