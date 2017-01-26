@@ -40,6 +40,12 @@ class SSLTLSChecks:
             print "Host is VULNERABLE to TLS CRIME!"
         else:
             print "Host not vulnerable, false positive found!"
+            print "Tagging as FALSE POSITIVE"
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = 'FALSE POSITIVE'
+            else:
+                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')
 
     # Check for RC4 Ciphers - If vulnerable add to Nessus file
     def rc4_ciphers(self, ipaddress, port, issue, timeout):
@@ -65,6 +71,12 @@ class SSLTLSChecks:
             print "Host is using RC4 Cipher Suites!"
         else:
             print "Host not vulnerable, false positive found!"
+            print "Tagging as FALSE POSITIVE"
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = 'FALSE POSITIVE'
+            else:
+                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')
 
     # Check for SSL FREAK - If vulnerable add to Nessus file
     def ssl_freak(self, ipaddress, port, issue, timeout):
@@ -90,6 +102,12 @@ class SSLTLSChecks:
             print "Host is VULNERABLE to SSL FREAK ATTACK!"
         else:
             print "Host not vulnerable, false positive found!"
+            print "Tagging as FALSE POSITIVE"
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = 'FALSE POSITIVE'
+            else:
+                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')
 
     # Check for SSL LOGJAM - If vulnerable add to Nessus file
     def ssl_logjam(self, ipaddress, port, issue, timeout):
@@ -115,6 +133,12 @@ class SSLTLSChecks:
             print "Host is VULNERABLE to SSL LOGJAM ATTACK!"
         else:
             print "Host not vulnerable, false positive found!"
+            print "Tagging as FALSE POSITIVE"
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = 'FALSE POSITIVE'
+            else:
+                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')
 
     # Test for weak signature algorithm
     def cert_weak_algor(self, ipaddress, port, issue, timeout):
@@ -140,6 +164,12 @@ class SSLTLSChecks:
             print "Host is using a WEAK ALGORITHM!"
         else:
             print "Host not vulnerable, false positive found!"
+            print "Tagging as FALSE POSITIVE"
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = 'FALSE POSITIVE'
+            else:
+                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')
 
     # Test for SSL Poodle Vulnerability
     def ssl_poodle(self, ipaddress, port, issue, timeout):
@@ -165,6 +195,12 @@ class SSLTLSChecks:
             print "Host is VULNERABLE to SSL Poodle!"
         else:
             print "Host not vulnerable, false positive found!"
+            print "Tagging as FALSE POSITIVE"
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = 'FALSE POSITIVE'
+            else:
+                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')
 
     # Check for SSL DROWN - If vulnerable add to Nessus file
     def sslv2_DROWN(self, ipaddress, port, issue, timeout):
@@ -190,6 +226,13 @@ class SSLTLSChecks:
             print "Host is VULNERABLE to SSL DROWN ATTACK!"
         else:
             print "Host not vulnerable, false positive found!"
+            print "Tagging as FALSE POSITIVE"
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = 'FALSE POSITIVE'
+            else:
+                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')
+
     # Check for SSLv3 and/or SSLv2 - If vulnerable add to Nessus file
     def ssl_v2v3(self, ipaddress, port, issue, timeout):
         ssl_v2v3_pattern = re.compile(r"SSLv3\s+offered\s\(NOT\sok\)|SSLv2\s+offered\s\(NOT\sok\)")
@@ -214,6 +257,12 @@ class SSLTLSChecks:
             print "Host has SSLv2 and/or SSLv3 ENABLED!"
         else:
             print "Host not vulnerable, false positive found!"
+            print "Tagging as FALSE POSITIVE"
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = 'FALSE POSITIVE'
+            else:
+                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')
 
 
     # Check for Self Signed Certificate - If vulnerable add to Nessus file
@@ -239,6 +288,12 @@ class SSLTLSChecks:
             print "Host has a SELF SIGNED certificate!"
         else:
             print "Host not vulnerable, false positive found!"
+            print "Tagging as FALSE POSITIVE"
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = 'FALSE POSITIVE'
+            else:
+                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')
 
 
 

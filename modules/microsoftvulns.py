@@ -34,3 +34,9 @@ class MicrosoftVulns:
             print "Host is vulnerable to MS08-067!"
         else:
             print "Host not vulnerable, false positive found!"
+            print "Tagging as FALSE POSITIVE"
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = 'FALSE POSITIVE'
+            else:
+                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')

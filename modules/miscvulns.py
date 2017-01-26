@@ -36,6 +36,12 @@ class MiscValidations:
             print "Host has HTTP TRACE method ENABLED!"
         else:
             print "Host not vulnerable, false positive found!"
+            print "Tagging as FALSE POSITIVE"
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = 'FALSE POSITIVE'
+            else:
+                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')
 
     # Check for default community name public - If vulnerable add to Nessus file
     def snmp_default_public(self, ipaddress, issue):
@@ -59,6 +65,12 @@ class MiscValidations:
             print "Host has SNMP DEFAULT community string PUBLIC!"
         else:
             print "Host not vulnerable, false positive found!"
+            print "Tagging as FALSE POSITIVE"
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = 'FALSE POSITIVE'
+            else:
+                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')
 
     # Check for a valid TCP Timestamp Response from host - If vulnerable add to Nessus file
     def tcpts_response(self, ipaddress, issue):
@@ -95,4 +107,10 @@ class MiscValidations:
                 else:
                     SubElementWithText(issue, 'plugin_output', output1)
         else:
-            print "No valid response, false positive found!"
+            print "Host not vulnerable, false positive found!"
+            print "Tagging as FALSE POSITIVE"
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = 'FALSE POSITIVE'
+            else:
+                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')

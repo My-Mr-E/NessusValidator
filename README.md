@@ -67,6 +67,9 @@ Example: ./validator.py -f "nessusfile.nessus" --listhost
   
   --listhost            Prints a list of live hosts from scan results
   
+  --removefalsepositive
+                        DANGEROUS!!! Removes false positive entries from the
+                        Nessus file
 
 
 ## TO-DO

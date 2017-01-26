@@ -16,6 +16,7 @@ parser.add_argument('--timestamp',help='Validate TCP Timestamp Responses',action
 parser.add_argument('--timeout',help='Set the timeout for tests that tend to hang up',default=6,required=False)
 parser.add_argument('--removeinfo',help='Remove Informational findings from the Nessus file',action="store_true",default=False,required=False)
 parser.add_argument('--listhost',help='Prints a list of live hosts from scan results',action="store_true",default=False,required=False)
+parser.add_argument('--removefalsepositive',help='DANGEROUS!!! Removes false positive entries from the Nessus file',action="store_true",default=False,required=False)
 args = parser.parse_args()
 
 # Parse Nessus file with Element Tree
@@ -24,9 +25,15 @@ nessus = ET.parse(args.file)
 # Get the root of the Nessus XML tree
 nessus_root = nessus.getroot()
 
-# Testing XML Parse - Printing the root tag of the Nessus file
-print "Parsing Nessus File: " + nessus_root.tag
-
+# Testing XML Parse - Printing the root tag of the Nessus file and Intro!
+print "****************************************************************"
+print "* Parsing Nessus File: " + nessus_root.tag
+print "* Be sure to set the appropriate timeout or you may see False negatives"
+print "* False Positives are tagged with FALSE POSITIVE"
+print "* Remove false positives with the --removefalsepositive argument"
+print "* Validation output is stored in the Nessus file"
+print "* Thanks for using Validator, Author: Scott Busby"
+print "****************************************************************"
 
 # Timeout variable
 timeout = args.timeout
@@ -37,6 +44,15 @@ MISC = miscvulns.MiscValidations()
 DNS = dnsvulns.DNSVulns()
 SMB = smbvulns.SMBVulns()
 MS = microsoftvulns.MicrosoftVulns()
+
+# Remove all items tagged as False Positive
+if args.removefalsepositive:
+    for host in nessus.iter('ReportHost'):
+        for issue in host.iter('ReportItem'):
+            for f in issue.findall('plugin_output'):
+                if f.text == 'FALSE POSITIVE':
+                    print "Removed False Positive: " + issue.get('pluginName')
+                    host.remove(issue)
 
 # Prints a list of live hosts from the Nessus scan data
 if args.listhost:
@@ -58,7 +74,7 @@ if args.removeinfo:
                 print "Run again to remove: " + issue.get('pluginName')
 
 # Find All hosts in the file and validate what vulnerabilities we can for each!
-if args.file and not args.testssl and not args.timestamp and not args.removeinfo and not args.listhost:
+if args.file and not args.testssl and not args.timestamp and not args.removeinfo and not args.listhost and not args.removefalsepositive:
     for host in nessus.iter('ReportHost'):
         ipaddress = host.get('name')
         for issue in host.iter('ReportItem'):
@@ -80,7 +96,7 @@ if args.file and not args.testssl and not args.timestamp and not args.removeinfo
 # Misc Vulnerabilities
             elif issue.get('pluginID') == '25220':  # TCP Timestamp Supported
                 MISC.tcpts_response(ipaddress, issue)
-            elif issue.get('pluginID') == '41028':  # SNMP has default community string Public
+            elif issue.get('pluginID') == '41028' or issue.get('pluginID') == '10264':  # SNMP has default community string Public
                 MISC.snmp_default_public(ipaddress, issue)
             elif issue.get('pluginID') == '11213':  # HTTP TRACE method enabled
                 MISC.http_trace(ipaddress, port, issue, timeout)

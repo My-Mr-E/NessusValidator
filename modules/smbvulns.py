@@ -31,3 +31,9 @@ class SMBVulns:
             print "Host is vulnerable message signing is DISABLED!"
         else:
             print "Host not vulnerable, false positive found!"
+            print "Tagging as FALSE POSITIVE"
+            if plug_out:
+                for plug in plug_out:
+                    plug.text = 'FALSE POSITIVE'
+            else:
+                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')
