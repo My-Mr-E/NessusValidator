@@ -14,6 +14,8 @@ parser.add_argument('-f','--file', help='Input Nessus File',required=True)
 parser.add_argument('--testssl',help='Run validations for SSL/TLS vulnerabilities',action="store_true",default=False,required=False)
 parser.add_argument('--timestamp',help='Validate TCP Timestamp Responses',action="store_true",default=False,required=False)
 parser.add_argument('--timeout',help='Set the timeout for tests that tend to hang up',default=6,required=False)
+parser.add_argument('--removeinfo',help='Remove Informational findings from the Nessus file',action="store_true",default=False,required=False)
+parser.add_argument('--listhost',help='Prints a list of live hosts from scan results',action="store_true",default=False,required=False)
 args = parser.parse_args()
 
 # Parse Nessus file with Element Tree
@@ -23,7 +25,7 @@ nessus = ET.parse(args.file)
 nessus_root = nessus.getroot()
 
 # Testing XML Parse - Printing the root tag of the Nessus file
-print nessus_root.tag
+print "Parsing Nessus File: " + nessus_root.tag
 
 
 # Timeout variable
@@ -36,9 +38,27 @@ DNS = dnsvulns.DNSVulns()
 SMB = smbvulns.SMBVulns()
 MS = microsoftvulns.MicrosoftVulns()
 
+# Prints a list of live hosts from the Nessus scan data
+if args.listhost:
+    for host in nessus.iter('ReportHost'):
+        print host.get('name')
+
+# ***Testing*** Remove all informational findings
+# Not programmtically correct, Needs to remove all issues with informational status in a single pass.
+# Run this multiple times until all informationals are removed.
+if args.removeinfo:
+    for host in nessus.iter('ReportHost'):
+        for issue in host.iter('ReportItem'):
+            if issue.get('severity') == '0':
+                print "Removed:" + issue.get('pluginName')
+                host.remove(issue)
+        for issue in host.iter('ReportItem'):
+            severity = issue.get('severity')
+            if severity == '0':
+                print "Run again to remove: " + issue.get('pluginName')
 
 # Find All hosts in the file and validate what vulnerabilities we can for each!
-if args.file and not args.testssl and not args.timestamp:
+if args.file and not args.testssl and not args.timestamp and not args.removeinfo and not args.listhost:
     for host in nessus.iter('ReportHost'):
         ipaddress = host.get('name')
         for issue in host.iter('ReportItem'):

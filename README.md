@@ -51,20 +51,22 @@ The following vulnerabilities are currently supported by validator:
 
 Example: ./validator.py -f "nessusfile.nessus"
 
-Example: ./validator.py -f "nessusfile.nessus" --timestamp
+Example: ./validator.py -f "nessusfile.nessus" --listhost
 
--f "Nessus file input"
-
---testssl "Perform only SSL/TLS validations"
-
---timestamp "Perform only TCP Timestamp Response validations"
+  -h, --help            show this help message and exit
+  -f FILE, --file FILE  Input Nessus File
+  --testssl             Run validations for SSL/TLS vulnerabilities
+  --timestamp           Validate TCP Timestamp Responses
+  --timeout TIMEOUT     Set the timeout for tests that tend to hang up
+  --removeinfo          Remove Informational findings from the Nessus file
+  --listhost            Prints a list of live hosts from scan results
 
 
 ## TO-DO
 
 * Continue adding validations
 * Add the ability to automatically remove false positives (and reduce the chance of removing false negatives)
-* Add the ability to create a host list
+* Add the ability to create a host list (Completed)
 * Add the ability to export validations to a different file
 * Add selective validation
 * Multi-thread the validations to speed the process
@@ -84,6 +86,7 @@ The setup file will download TestSSL and place it in the correct directory.
 * NMAP
 * onesixtyone
 * hping3
+* cURL
 
 
 **The tool is designed to run in Kali 2.0, as well as tested in Kali 2.0**
