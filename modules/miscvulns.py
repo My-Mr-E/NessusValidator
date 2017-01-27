@@ -15,7 +15,7 @@ def SubElementWithText(parent, tag, text):
 class MiscValidations:
     # Misc SSL/TLS cipher checks
     def ssl_cipher_misc(self, ipaddress, port, issue, timeout):
-        ssl_cipher_misc_pattern = re.compile(r"SSLv2")
+        ssl_cipher_misc_pattern = re.compile(r"[sS][sS][lL]")
         # Output showing that its doing things...
         print "Using TestSSL to gather SSL/TLS cipher data " + ipaddress + " port " + port + "."
         # Command running TestSSL then killing the proccess in case of a hang.
