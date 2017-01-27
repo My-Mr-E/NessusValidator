@@ -27,14 +27,14 @@ nessus = ET.parse(args.file)
 nessus_root = nessus.getroot()
 
 # Testing XML Parse - Printing the root tag of the Nessus file and Intro!
-print "****************************************************************"
+print "***********************************************************************"
 print "* Parsing Nessus File: " + nessus_root.tag
 print "* Be sure to set the appropriate timeout or you may see False negatives"
 print "* False Positives are tagged with FALSE POSITIVE"
 print "* Remove false positives with the --removefalsepositive argument"
 print "* Validation output is stored in the Nessus file"
 print "* Thanks for using Validator, Author: Scott Busby"
-print "****************************************************************"
+print "***********************************************************************"
 
 # Timeout variable
 timeout = args.timeout
