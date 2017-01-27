@@ -153,7 +153,7 @@ elif args.file and args.testssl:
         ipaddress = host.get('name')
         for issue in host.iter('ReportItem'):
             port = issue.get('port')
-            if issue.get('pluginID') == '57582':  # SSL Certificate is Self Signed
+            if issue.get('pluginID') == '57582' or issue.get('pluginID') == '45411' or issue.get('pluginID') == '51192':  # SSL Certificate is Self Signed or untrusted
                 SSL.ssl_self_signed(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '78479' or issue.get('pluginID') == '80035':  # SSL/TLS Server vulnerable to SSL/TLS POODLE
                 SSL.ssl_poodle(ipaddress, port, issue, timeout)
