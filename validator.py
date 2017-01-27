@@ -118,7 +118,7 @@ if args.file and not args.testssl and not args.timestamp and not args.removeinfo
             elif issue.get('svc_name') == 'netbios-ns': # Gathers data for all netbios-ns based issues
                 MISC.nb_issues(ipaddress, port, issue)
             elif issue.get('svc_name') == 'cifs': # Gathers data for all CIFS based issues
-                MISC.cifs_issues(ipaddress, port, issue, timeout)
+                MISC.cifs_issues(ipaddress, port, issue)
             elif issue.get('pluginID') == '10079':  # Anonymous FTP Login
                 MISC.ftp_anon(ipaddress, port, issue)
             elif issue.get('pluginID') == '94437' or issue.get('pluginID') == '26928' or issue.get('pluginID') == '42873':  # Misc SSL/TLS issues

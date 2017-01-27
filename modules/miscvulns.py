@@ -76,13 +76,13 @@ class MiscValidations:
 
 
     # Check protocol used, Gather evidence for CIFS
-    def cifs_issues(self, ipaddress, port, issue, timeout):
+    def cifs_issues(self, ipaddress, port, issue):
         cifs_pattern = re.compile(r"Starting\s")
 
         # Output showing that its doing things...
         print "Using enum4linux to gather CIFS data on " + ipaddress + " port " + port + "."
-        command = subprocess.Popen(["enum4linux " + ipaddress],
-                                    stdout=subprocess.PIPE)
+        cmd = "enum4linux {0}".format(str(ipaddress))
+        command = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, err = command.communicate()
 
         cifs_match = re.findall(cifs_pattern, output)
