@@ -17,6 +17,12 @@ The following vulnerabilities are currently supported by validator:
 * MS08-067
 
 
+#### SSL/TLS Vulnerabilities:
+
+* Weak SSH Algorithms
+* CBC Mode Ciphers Enabled
+* Weak MAC Algorithms
+
 #### DNS Vulnerabilities:
 
 * DNS Server Allows Cache Snooping
@@ -27,19 +33,31 @@ The following vulnerabilities are currently supported by validator:
 * TLS CRIME
 * SSL RC4 Cipher Suites Enabled
 * SSL Certificate is Self Signed
+* SSL Certificate is untrusted
+* SSL Certificate is expired
 * SSL POODLE
 * SSL Certificate uses Weak Signature Algorithms
 * SSL DROWN
 * SSL Version 2 and/or 3 Enabled
 * SSL LOGJAM
 * SSL FREAK
+* OpenSSL Heartbleed
+* OpenSSL 'ChangeCipherSpec' MiTM Vulnerability
 
 
-#### Other Misc Vulnerabilities:
+#### Misc Vulnerabilities:
 
 * TCP Timestamp Supported/TCP Timestamp Response
 * SNMP Agent Default Community Name (public)
 * HTTP TRACE method enabled
+* Anonymous FTP Login
+
+#### Other:
+## For this section Validator gathers information and puts it into the Nessus file for specific vulnerabilities, but requires a manual review to ensure it is a valid vulnerability.
+* Gathers NTP info for NTP based vulnerabilities
+* Gathers Netbios information for NB based vulnerabilities
+* Gathers CIFS Information for CIFS based vulnerabilities (including Badlock)
+* Gathers info for SSL/TLS SWEET32 and Medium & weak strength ciphers
 
 
 ## HOW-TO

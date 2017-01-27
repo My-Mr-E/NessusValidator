@@ -6,6 +6,7 @@ from modules import miscvulns
 from modules import smbvulns
 from modules import dnsvulns
 from modules import microsoftvulns
+from modules import sshvulns
 
 # Arguments obviously...
 parser = argparse.ArgumentParser(description='Nessus scan validation tool.')
@@ -44,6 +45,7 @@ MISC = miscvulns.MiscValidations()
 DNS = dnsvulns.DNSVulns()
 SMB = smbvulns.SMBVulns()
 MS = microsoftvulns.MicrosoftVulns()
+SSH = sshvulns.SSHVulns()
 
 # Remove all items tagged as False Positive
 if args.removefalsepositive:
@@ -87,11 +89,19 @@ if args.file and not args.testssl and not args.timestamp and not args.removeinfo
 # DNS Vulnerabilities
             elif issue.get('pluginID') == '12217':  # DNS Server allows cache snooping
                 protocol = issue.get('protocol')
-                DNS.dns_cache_snoop(protocol, ipaddress,port, issue)
+                DNS.dns_cache_snoop(protocol, ipaddress, port, issue)
 
 # Microsoft Vulnerabilities
             elif issue.get('pluginID') == '34477':  # MS08-067
                 MS.ms08_067(ipaddress, port, issue)
+
+# SSH Vulnerabilities
+            elif issue.get('pluginID') == '90317':  # Weak SSH Algorithms
+                SSH.ssh_weak_algos(ipaddress, port, issue)
+            elif issue.get('pluginID') == '70658':  # CBC Mode Ciphers Enabled
+                SSH.ssh_cbc(ipaddress, port, issue)
+            elif issue.get('pluginID') == '71049':  # Weak MAC Algorithms Enabled
+                SSH.ssh_hmac(ipaddress, port, issue)
 
 # Misc Vulnerabilities
             elif issue.get('pluginID') == '25220':  # TCP Timestamp Supported
@@ -100,10 +110,23 @@ if args.file and not args.testssl and not args.timestamp and not args.removeinfo
                 MISC.snmp_default_public(ipaddress, issue)
             elif issue.get('pluginID') == '11213':  # HTTP TRACE method enabled
                 MISC.http_trace(ipaddress, port, issue, timeout)
+            elif issue.get('pluginID') == '88098':  # Apache ETag Header
+                MISC.http_etag(ipaddress, port, issue, timeout)
+            elif issue.get('svc_name') == 'ntp' and issue.get('port') == '123':  # Gathers data for all NTP based issues on port 123
+                protocol = issue.get('protocol')
+                MISC.ntp_issues(protocol, ipaddress, port, issue)
+            elif issue.get('svc_name') == 'netbios-ns': # Gathers data for all netbios-ns based issues
+                MISC.nb_issues(ipaddress, port, issue)
+            elif issue.get('svc_name') == 'cifs': # Gathers data for all CIFS based issues
+                MISC.cifs_issues(ipaddress, port, issue, timeout)
+            elif issue.get('pluginID') == '10079':  # Anonymous FTP Login
+                MISC.ftp_anon(ipaddress, port, issue)
+            elif issue.get('pluginID') == '94437' or issue.get('pluginID') == '26928' or issue.get('pluginID') == '42873':  # Misc SSL/TLS issues
+                MISC.ssl_cipher_misc(ipaddress, port, issue, timeout)
 
 
 # SSL Vulnerabilities
-            elif issue.get('pluginID') == '57582':  # SSL Certificate is Self Signed
+            elif issue.get('pluginID') == '57582' or issue.get('pluginID') == '45411' or issue.get('pluginID') == '51192':  # SSL Certificate is Self Signed or untrusted
                 SSL.ssl_self_signed(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '78479' or issue.get('pluginID') == '80035':  # SSL/TLS Server vulnerable to SSL/TLS POODLE
                 SSL.ssl_poodle(ipaddress, port, issue, timeout)
@@ -119,7 +142,10 @@ if args.file and not args.testssl and not args.timestamp and not args.removeinfo
                 SSL.ssl_freak(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '65821':  # Server uses RC4 Cipher Suites
                 SSL.rc4_ciphers(ipaddress, port, issue, timeout)
-
+            elif issue.get('pluginID') == '73412':  # OpenSSL Heartbleed
+                SSL.openssl_heartbleed(ipaddress, port, issue, timeout)
+            elif issue.get('pluginID') == '73412':  # OpenSSL CCS
+                SSL.openssl_CCS(ipaddress, port, issue, timeout)
 
 # Only validate SSL Vulnerabilities
 elif args.file and args.testssl:
@@ -143,8 +169,10 @@ elif args.file and args.testssl:
                 SSL.ssl_freak(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '65821':  # Server uses RC4 Cipher Suites
                 SSL.rc4_ciphers(ipaddress, port, issue, timeout)
-            elif issue.get('pluginID') == '62565':  # TLS CRIME Vulnerability
-                SSL.rc4_ciphers(ipaddress, port, issue, timeout)
+            elif issue.get('pluginID') == '73412':  # OpenSSL Heartbleed
+                SSL.openssl_heartbleed(ipaddress, port, issue, timeout)
+            elif issue.get('pluginID') == '73412':  # OpenSSL CCS
+                SSL.openssl_CCS(ipaddress, port, issue, timeout)
 
 # Only test TCP Timestamp Responses
 elif args.file and args.timestamp:
