@@ -1,14 +1,14 @@
 #! /usr/bin/python
 
-import xml.etree.ElementTree as ET,argparse,subprocess,re
-from multiprocessing import Process, Pool
+import xml.etree.ElementTree as ET,argparse
+from multiprocessing import Pool
 from modules import ssltlsvulns
 from modules import miscvulns
 from modules import smbvulns
 from modules import dnsvulns
 from modules import microsoftvulns
 from modules import sshvulns
-import os
+
 
 
 #Version Information
@@ -35,6 +35,49 @@ nessus = ET.parse(args.file)
 nessus_root = nessus.getroot()
 
 # Testing XML Parse - Printing the root tag of the Nessus file and Intro!
+print """..........MMMM .... MMMM.  .....  OOMMM .... MMMM...........
+..........M8888MMMM.................OOOO8MMM8888M...........
+..........MD88888M..................OOOOZMD8888MO...........
+...........M88888M.............. OOOOOOOOM88888M............
+....... ,MMMMD88M~............$OOOOOOOOOOMM88MMMMM:.........
+.... MM .....  ...............OOOOOOOOOOOOOO7.....  MM .....
+...MI........................OOOOOOOOOOOOOOOO.........?M ...
+ MM................. .N.......ZOOOOOMOOOOOOOZ...........7M..
+M ................MM ....MM.... MM. .. MMOOO ............ M
+..MMMMMMM... ....M.........M ..M........ M .......MMMMMMM...
+......M,M.......M...........M.M ..........M.......M:M.......
+.....M.M........M ....7MMD..M.M...MMM.....M.......=M.M......
+....M..M........M... .MMMM .M.M  MMMM.  ..M. .  ..+M.OM.
+...M...M .... . .M   ..MM..M  ,M. MM .   M~ .. .. =MOOOM. .
+..M ...M .........M ..... M.... M.......M........++MOOOZM...
+.DM....MO.......... MMMMM.........MMMMM ........:+=M,OOOON..
+.M......M.......................................++M=.....M..
+INOZ....M+.................................... ++=M+... .M$.
+MOOOO ...M+... ...  . ...... . . ......... ...++=M+=.....+M
+MOOOOO...~M= ...........MMM,,,,,MMN .... ...++++M=+ .....+M.
+MOOOOO....+M==........MO,,,,,,,,,,,~M..... +++=M++......++M.
+MOOOOO.... +MM++.....M,,,:M,,,,,OO,,,MO..++++OM=+~..... ++M
+MOOOOOO.....+=M++=..M,,,,MMM,,,MMM,,,,M=++++M7++,......+88M.
+MOOOOOO .....++MM=+MD,,,,NMM,,,MMM,,++?M++MM++=.......:888M
+MOOOOOOOZ .....+=MMMN??+,,,,,,,,~+??++?MMM++++.ZOOOOOO8888M.
+M= OOOOOOO......++8MM$+?++++++++++++++MM+++=..OOOOOOO88888M.
+.M+.OOOOOO$......O8888MMM?+++++++?MMM+++++ ...OOOOOO88888M,.
+.M++ .OOOO........OOO88888MMMMMMM+++++++......OOOOO888888M..
+..M+++...............OOO88888888+++++......... OOO888888M...
+..M++++.................OOOO88888O.............O88888888M...
+...M++++=.................OOOOOOOOO........... =8888888M....
+....M+++++= ...............OOOOOOOOO........ +++888888M.....
+.....M+++++++..............~OOOOOOOO......=+++++88888M .....
+......M+++++++++=...........7OOOOO?....=++++++++8888M.......
+.......MM==+=++++++++= . ......   =+++++++++++++88MM........
+.........M$+++?MMMNNMMM=++++++++++++MMMMDMMMM+++8M .........
+...........MMM8888888888MO++++++++MM888888888MMM............
+...........N888888M888888NM++++++M8888888M88888M ...........
+..........MN8888NM88888888MM++++M88888888MM88888M...........
+..........MD888DMM888888888M+++MD88888888MMM8888MM..........
+......... M8888MDM888888888MMMMM8888888888MM88888M..........
+..........MMD88MDM88888888MM...,MN88888888MM8888M...........
+... .   .    .~8MMMNDZ~..............78NMMMD7.... ... . ...."""
 print "***********************************************************************"
 print "* Parsing Nessus File: " + nessus_root.tag
 print "* Be sure to set the appropriate timeout or you may see False negatives"
@@ -107,7 +150,6 @@ def plugins(host):
                 'pluginID') == '42873':  # Misc SSL/TLS issues
             MISC.ssl_cipher_misc(ipaddress, port, issue, timeout)
 
-
             # SSL Vulnerabilities
         elif issue.get('pluginID') == '57582' or issue.get('pluginID') == '45411' or issue.get(
                 'pluginID') == '51192':  # SSL Certificate is Self Signed or untrusted
@@ -133,6 +175,7 @@ def plugins(host):
             SSL.openssl_CCS(ipaddress, port, issue, timeout)
         elif issue.get('pluginID') == '62565':  # TLS CRIME
             SSL.tls_crime(ipaddress, port, issue, timeout)
+
 
 # SSL Plugins function
 def ssl_plugins(host):
@@ -178,7 +221,7 @@ if args.listhost:
         print host.get('name')
 
 # ***Testing*** Remove all informational findings
-# Not programmtically correct, Needs to remove all issues with informational status in a single pass.
+# Not programmatically correct, Needs to remove all issues with informational status in a single pass.
 # Run this multiple times until all informationals are removed.
 if args.removeinfo:
     for host in nessus.iter('ReportHost'):
@@ -193,26 +236,23 @@ if args.removeinfo:
 
 # Find All hosts in the file and validate what vulnerabilities we can for each!
 if args.file and not args.testssl and not args.timestamp and not args.removeinfo and not args.listhost and not args.removefalsepositive:
-# Begin multi-processing
+
     for host in nessus.iter('ReportHost'):
         ipaddress = host.get('name')
-# Create the processor pool
-        pool = Pool(processes=int(args.thread))
+        pool = Pool(processes=int(args.thread))  # Create the processor pool, Begin multi-processing
         pool.map(plugins,host)
-        pool.close()
+        pool.close()  # Close the pool
         pool.join()
-# Close the pool
+
 
 # Only validate SSL Vulnerabilities
 elif args.file and args.testssl:
     for host in nessus.iter('ReportHost'):
         ipaddress = host.get('name')
-# Create the processor pool
-        pool = Pool(processes=int(args.thread))
+        pool = Pool(processes=int(args.thread))  # Create the processor pool
         pool.map(ssl_plugins, host)
-        pool.close()
+        pool.close()  # Close the pool
         pool.join()
-# Close the pool
 
 # Only test TCP Timestamp Responses
 elif args.file and args.timestamp:
@@ -222,10 +262,6 @@ elif args.file and args.timestamp:
             port = issue.get('port')
             if issue.get('pluginID') == '25220':  # TCP Timestamp Supported
                 MISC.tcpts_response(ipaddress, issue)
-
-
-
-
 
 # Write all changes back to the orginal Nessus file
 nessus.write(args.file)
