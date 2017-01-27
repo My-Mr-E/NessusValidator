@@ -53,7 +53,7 @@ The following vulnerabilities are currently supported by validator:
 * Anonymous FTP Login
 
 #### Other:
-######## For this section Validator gathers information and puts it into the Nessus file for specific vulnerabilities, but requires a manual review to ensure it is a valid vulnerability.
+###### For this section Validator gathers information and puts it into the Nessus file for specific vulnerabilities, but requires a manual review to ensure it is a valid vulnerability.
 * Gathers NTP info for NTP based vulnerabilities
 * Gathers Netbios information for NB based vulnerabilities
 * Gathers CIFS Information for CIFS based vulnerabilities (including Badlock)
