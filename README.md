@@ -2,6 +2,7 @@
 
 Validator is designed to automatically read in a .nessus file exported from a Nessus scan and perform various validation tasks, then replace the Nessus plugin output with manual validation output.
 
+Version: 1.0.38
 
 ## Currenly supported vulnerabilities/validations
 
@@ -101,6 +102,8 @@ Example: ./validator.py -f "nessusfile.nessus" --listhost
 * Possibly perform validation tasks for other scanners
 * HTML reporting
 * CSV Exporting
+* Add update functionality
+* Add compatibility for multiple OS's
 * Probably a lot more I'm forgetting...
 
 
