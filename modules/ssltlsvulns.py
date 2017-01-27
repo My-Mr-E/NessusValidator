@@ -83,7 +83,7 @@ class SSLTLSChecks:
 
     # Check for TLS CRIME vulnerability - If vulnerable add to Nessus file
     def tls_crime(self, ipaddress, port, issue, timeout):
-        freak_pattern = re.compile(r"[vV][uU][lL][nN][eE][rR][aA][bB][lL][eE]\s\(NOT\sok\)")
+        crime_pattern = re.compile(r"[vV][uU][lL][nN][eE][rR][aA][bB][lL][eE]\s\(NOT\sok\)")
 
         # Output showing that its doing things...
         print "Using TestSSL to test for TLS CRIME on " + ipaddress + " port " + port + "."
@@ -92,9 +92,9 @@ class SSLTLSChecks:
         command = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, err = command.communicate()
         output1 = re.sub(sweep_up1, '', output)
-        freak_match = re.findall(freak_pattern, output1)
+        crime_match = re.findall(crime_pattern, output1)
         plug_out = issue.findall('plugin_output')
-        if freak_match:
+        if crime_match:
             # Checking if Nessus plugin output already exists, if so, replace it! If not create a new plugin_output.
             if plug_out:
                 for plug in plug_out:

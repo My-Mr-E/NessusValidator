@@ -2,7 +2,7 @@
 
 Validator is designed to automatically read in a .nessus file exported from a Nessus scan and perform various validation tasks, then replace the Nessus plugin output with manual validation output.
 
-Version: 1.0.38
+Version: 1.0.39
 
 ## Currenly supported vulnerabilities/validations
 
@@ -18,7 +18,7 @@ The following vulnerabilities are currently supported by validator:
 * MS08-067
 
 
-#### SSL/TLS Vulnerabilities:
+#### SSH Vulnerabilities:
 
 * Weak SSH Algorithms
 * CBC Mode Ciphers Enabled
@@ -90,6 +90,7 @@ Example: ./validator.py -f "nessusfile.nessus" --listhost
                         DANGEROUS!!! Removes false positive entries from the
                         Nessus file
 
+ --thread THREAD       Multi-process the validation process
 
 ## TO-DO
 
@@ -98,7 +99,7 @@ Example: ./validator.py -f "nessusfile.nessus" --listhost
 * (Completed)Add the ability to create a host list
 * Add the ability to export validations to a different file
 * Add selective validation
-* Multi-thread the validations to speed the process
+* (Completed)Multi-processing the validations to speed the process
 * Possibly perform validation tasks for other scanners
 * HTML reporting
 * CSV Exporting
