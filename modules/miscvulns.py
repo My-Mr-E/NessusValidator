@@ -74,6 +74,7 @@ class MiscValidations:
             else:
                 SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')
 
+
     # Check protocol used, Gather evidence for CIFS
     def cifs_issues(self, ipaddress, port, issue, timeout):
         cifs_pattern = re.compile(r"Starting\s")
