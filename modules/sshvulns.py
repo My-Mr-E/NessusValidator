@@ -15,7 +15,7 @@ class SSHVulns:
 
         # Output showing that its doing things...
         print "Using NMAP to check for weak ssh MAC algorithms on " + ipaddress + " port " + port + "."
-        command = subprocess.Popen(["nmap", "--script=ssh-enum-algos", "-p" + str(port), str(ipaddress)],
+        command = subprocess.Popen(["nmap", "--script=ssh2-enum-algos", "-p" + str(port), str(ipaddress)],
                                        stdout=subprocess.PIPE)
         output, err = command.communicate()
 
@@ -44,7 +44,7 @@ class SSHVulns:
 
         # Output showing that its doing things...
         print "Using NMAP to check for weak ssh algorithms on " + ipaddress + " port " + port + "."
-        command = subprocess.Popen(["nmap", "--script=ssh-enum-algos", "-p" + str(port), str(ipaddress)],
+        command = subprocess.Popen(["nmap", "--script=ssh2-enum-algos", "-p" + str(port), str(ipaddress)],
                                        stdout=subprocess.PIPE)
         output, err = command.communicate()
 
@@ -74,7 +74,7 @@ class SSHVulns:
 
         # Output showing that its doing things...
         print "Using NMAP to check for weak ssh algorithms on " + ipaddress + " port " + port + "."
-        command = subprocess.Popen(["nmap", "--script=ssh-enum-algos", "-p" + str(port), str(ipaddress)],
+        command = subprocess.Popen(["nmap", "--script=ssh2-enum-algos", "-p" + str(port), str(ipaddress)],
                                        stdout=subprocess.PIPE)
         output, err = command.communicate()
 
