@@ -80,7 +80,7 @@ class MiscValidations:
 
         # Output showing that its doing things...
         print "Using enum4linux to gather CIFS data on " + ipaddress + " port " + port + "."
-        command = subprocess.Popen(["enum4linux {0} & sleep {1};kill $!".format(str(ipaddress),str(timeout))],
+        command = subprocess.Popen(["enum4linux " + ipaddress],
                                     stdout=subprocess.PIPE)
         output, err = command.communicate()
 
