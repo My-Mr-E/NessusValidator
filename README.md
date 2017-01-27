@@ -93,8 +93,8 @@ Example: ./validator.py -f "nessusfile.nessus" --listhost
 ## TO-DO
 
 * Continue adding validations
-* Add the ability to automatically remove false positives (and reduce the chance of removing false negatives)
-* Add the ability to create a host list (Completed)
+* (Completed)Add the ability to automatically remove false positives (and reduce the chance of removing false negatives)
+* (Completed)Add the ability to create a host list
 * Add the ability to export validations to a different file
 * Add selective validation
 * Multi-thread the validations to speed the process
