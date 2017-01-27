@@ -190,3 +190,4 @@ elif args.file and args.timestamp:
 
 # Write all changes back to the orginal Nessus file
 nessus.write(args.file)
+print "Changes saved to Nessus File."
