@@ -146,6 +146,8 @@ if args.file and not args.testssl and not args.timestamp and not args.removeinfo
                 SSL.openssl_heartbleed(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '73412':  # OpenSSL CCS
                 SSL.openssl_CCS(ipaddress, port, issue, timeout)
+            elif issue.get('pluginID') == '62565':  # TLS CRIME
+                SSL.tls_crime(ipaddress, port, issue, timeout)
 
 # Only validate SSL Vulnerabilities
 elif args.file and args.testssl:
@@ -173,6 +175,8 @@ elif args.file and args.testssl:
                 SSL.openssl_heartbleed(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '73412':  # OpenSSL CCS
                 SSL.openssl_CCS(ipaddress, port, issue, timeout)
+            elif issue.get('pluginID') == '62565':  # TLS CRIME
+                SSL.tls_crime(ipaddress, port, issue, timeout)
 
 # Only test TCP Timestamp Responses
 elif args.file and args.timestamp:
