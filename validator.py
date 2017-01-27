@@ -8,6 +8,10 @@ from modules import dnsvulns
 from modules import microsoftvulns
 from modules import sshvulns
 
+
+#Version Information
+version = '1.0.38'
+
 # Arguments obviously...
 parser = argparse.ArgumentParser(description='Nessus scan validation tool.')
 parser.add_argument('-f','--file', help='Input Nessus File',required=True)
@@ -191,3 +195,5 @@ elif args.file and args.timestamp:
 # Write all changes back to the orginal Nessus file
 nessus.write(args.file)
 print "Changes saved to Nessus File."
+
+# Add finding that states Validator completed.
