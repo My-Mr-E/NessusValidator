@@ -24,7 +24,7 @@ parser.add_argument('--timeout',help='Set the timeout for tests that tend to han
 parser.add_argument('--removeinfo',help='Remove Informational findings from the Nessus file',action="store_true",default=False,required=False)
 parser.add_argument('--listhost',help='Prints a list of live hosts from scan results',action="store_true",default=False,required=False)
 parser.add_argument('--removefalsepositive',help='DANGEROUS!!! Removes false positive entries from the Nessus file',action="store_true",default=False,required=False)
-parser.add_argument('--thread',help='Multithread the validation process',default=1,required=False)
+#parser.add_argument('--thread',help='Multithread the validation process',default=1,required=False)
 args = parser.parse_args()
 
 
@@ -83,7 +83,7 @@ print "* Parsing Nessus File: " + nessus_root.tag
 print "* Be sure to set the appropriate timeout or you may see False negatives"
 print "* False Positives are tagged with FALSE POSITIVE"
 print "* Remove false positives with the --removefalsepositive argument"
-print "* Use --thread to multithread your testing"
+#print "* Use --thread to multithread your testing"
 print "* Validation output is stored in the Nessus file"
 print "* Thanks for using Validator, Author: Scott Busby"
 print "***********************************************************************"
