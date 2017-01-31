@@ -13,36 +13,6 @@ def SubElementWithText(parent, tag, text):
 
 
 class MiscValidations:
-    # Misc SSL/TLS cipher checks
-    def ssl_cipher_misc(self, ipaddress, port, issue, timeout):
-        ssl_cipher_misc_pattern = re.compile(r"[sS][sS][lL]")
-        # Output showing that its doing things...
-        print "Using TestSSL to gather SSL/TLS cipher data " + ipaddress + " port " + port + "."
-        # Command running TestSSL then killing the proccess in case of a hang.
-        cmd = "./testssl.sh/testssl.sh --quiet --color 0 -E {0}:{1} & sleep {2};kill $!".format(str(ipaddress), str(port), str(timeout))
-        command = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        output, err = command.communicate()
-        output1 = re.sub(sweep_up1, '', output)
-        ssl_cipher_misc_match = re.findall(ssl_cipher_misc_pattern, output1)
-        plug_out = issue.findall('plugin_output')
-        if ssl_cipher_misc_match:
-            # Checking if Nessus plugin output already exists, if so, replace it! If not create a new plugin_output.
-            if plug_out:
-                for plug in plug_out:
-                    plug.text = output1
-            else:
-                SubElementWithText(issue, 'plugin_output', output1)
-
-            print "Gathered SSL/TLS cipher data!"
-        else:
-            print "Could not gather SSL/TLS cipher data, false positive found!"
-            print "Tagging as FALSE POSITIVE"
-            if plug_out:
-                for plug in plug_out:
-                    plug.text = 'FALSE POSITIVE'
-            else:
-                SubElementWithText(issue, 'plugin_output', 'FALSE POSITIVE')
-
     # Check for anonymous FTP Login
     def ftp_anon(self, ipaddress, port, issue):
         ftp_anon_pattern = re.compile(r"Anonymous\sFTP\slogin\s(allowed)")

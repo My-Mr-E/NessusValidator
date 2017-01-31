@@ -84,7 +84,7 @@ if args.file and not args.testssl and not args.timestamp and not args.removeinfo
 
 # SMB Vulnerabilities
             if issue.get('pluginID') == '57608':  # SMB Signing Disabled
-                SMB.smb_sign_disabled(ipaddress, issue)
+                 SMB.smb_sign_disabled(ipaddress, issue)
 
 # DNS Vulnerabilities
             elif issue.get('pluginID') == '12217':  # DNS Server allows cache snooping
@@ -121,8 +121,7 @@ if args.file and not args.testssl and not args.timestamp and not args.removeinfo
                 MISC.cifs_issues(ipaddress, port, issue)
             elif issue.get('pluginID') == '10079':  # Anonymous FTP Login
                 MISC.ftp_anon(ipaddress, port, issue)
-#            elif issue.get('pluginID') == '94437' or issue.get('pluginID') == '26928' or issue.get('pluginID') == '42873':  # Misc SSL/TLS issues
-#                MISC.ssl_cipher_misc(ipaddress, port, issue, timeout)
+
 
 
 # SSL Vulnerabilities

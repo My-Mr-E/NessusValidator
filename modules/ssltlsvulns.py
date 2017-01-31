@@ -332,7 +332,7 @@ class SSLTLSChecks:
 
     # Check for Self Signed Certificate - If vulnerable add to Nessus file
     def ssl_self_signed(self, ipaddress, port, issue, timeout):
-        self_sign_pattern = re.compile(r"self-signed\s(\(NOT ok\))|NOT\sok\s(\(self signed\))|(self-signed)|self\ssigned")
+        self_sign_pattern = re.compile(r"self-signed\s(\(NOT ok\))|NOT\sok\s(\(self signed\))|(self-signed)|self\ssigned|selfsigned")
 
         # Output showing that its doing things...
         print "Using TestSSL to test for a self signed or untrusted certificate " + ipaddress + " port " + port + "."
@@ -343,6 +343,7 @@ class SSLTLSChecks:
         output1 = re.sub(sweep_up1, '', output)
         self_sign_match = re.findall(self_sign_pattern, output1)
         plug_out = issue.findall('plugin_output')
+
         if self_sign_match:
             # Checking if Nessus plugin output already exists, if so, replace it! If not create a new plugin_output.
             if plug_out:
