@@ -1,18 +1,12 @@
 #! /usr/bin/python
 
-import xml.etree.ElementTree as ET,argparse
-from multiprocessing import Pool
+import xml.etree.ElementTree as ET,argparse,subprocess,re
 from modules import ssltlsvulns
 from modules import miscvulns
 from modules import smbvulns
 from modules import dnsvulns
 from modules import microsoftvulns
 from modules import sshvulns
-
-
-
-#Version Information
-version = '1.0.39'
 
 # Arguments obviously...
 parser = argparse.ArgumentParser(description='Nessus scan validation tool.')
@@ -24,9 +18,7 @@ parser.add_argument('--timeout',help='Set the timeout for tests that tend to han
 parser.add_argument('--removeinfo',help='Remove Informational findings from the Nessus file',action="store_true",default=False,required=False)
 parser.add_argument('--listhost',help='Prints a list of live hosts from scan results',action="store_true",default=False,required=False)
 parser.add_argument('--removefalsepositive',help='DANGEROUS!!! Removes false positive entries from the Nessus file',action="store_true",default=False,required=False)
-#parser.add_argument('--thread',help='Multithread the validation process',default=1,required=False)
 args = parser.parse_args()
-
 
 # Parse Nessus file with Element Tree
 nessus = ET.parse(args.file)
@@ -35,55 +27,11 @@ nessus = ET.parse(args.file)
 nessus_root = nessus.getroot()
 
 # Testing XML Parse - Printing the root tag of the Nessus file and Intro!
-print """..........MMMM .... MMMM.  .....  OOMMM .... MMMM...........
-..........M8888MMMM.................OOOO8MMM8888M...........
-..........MD88888M..................OOOOZMD8888MO...........
-...........M88888M.............. OOOOOOOOM88888M............
-....... ,MMMMD88M~............$OOOOOOOOOOMM88MMMMM:.........
-.... MM .....  ...............OOOOOOOOOOOOOO7.....  MM .....
-...MI........................OOOOOOOOOOOOOOOO.........?M ...
- MM................. .N.......ZOOOOOMOOOOOOOZ...........7M..
-M ................MM ....MM.... MM. .. MMOOO ............ M
-..MMMMMMM... ....M.........M ..M........ M .......MMMMMMM...
-......M,M.......M...........M.M ..........M.......M:M.......
-.....M.M........M ....7MMD..M.M...MMM.....M.......=M.M......
-....M..M........M... .MMMM .M.M  MMMM.  ..M. .  ..+M.OM.
-...M...M .... . .M   ..MM..M  ,M. MM .   M~ .. .. =MOOOM. .
-..M ...M .........M ..... M.... M.......M........++MOOOZM...
-.DM....MO.......... MMMMM.........MMMMM ........:+=M,OOOON..
-.M......M.......................................++M=.....M..
-INOZ....M+.................................... ++=M+... .M$.
-MOOOO ...M+... ...  . ...... . . ......... ...++=M+=.....+M
-MOOOOO...~M= ...........MMM,,,,,MMN .... ...++++M=+ .....+M.
-MOOOOO....+M==........MO,,,,,,,,,,,~M..... +++=M++......++M.
-MOOOOO.... +MM++.....M,,,:M,,,,,OO,,,MO..++++OM=+~..... ++M
-MOOOOOO.....+=M++=..M,,,,MMM,,,MMM,,,,M=++++M7++,......+88M.
-MOOOOOO .....++MM=+MD,,,,NMM,,,MMM,,++?M++MM++=.......:888M
-MOOOOOOOZ .....+=MMMN??+,,,,,,,,~+??++?MMM++++.ZOOOOOO8888M.
-M= OOOOOOO......++8MM$+?++++++++++++++MM+++=..OOOOOOO88888M.
-.M+.OOOOOO$......O8888MMM?+++++++?MMM+++++ ...OOOOOO88888M,.
-.M++ .OOOO........OOO88888MMMMMMM+++++++......OOOOO888888M..
-..M+++...............OOO88888888+++++......... OOO888888M...
-..M++++.................OOOO88888O.............O88888888M...
-...M++++=.................OOOOOOOOO........... =8888888M....
-....M+++++= ...............OOOOOOOOO........ +++888888M.....
-.....M+++++++..............~OOOOOOOO......=+++++88888M .....
-......M+++++++++=...........7OOOOO?....=++++++++8888M.......
-.......MM==+=++++++++= . ......   =+++++++++++++88MM........
-.........M$+++?MMMNNMMM=++++++++++++MMMMDMMMM+++8M .........
-...........MMM8888888888MO++++++++MM888888888MMM............
-...........N888888M888888NM++++++M8888888M88888M ...........
-..........MN8888NM88888888MM++++M88888888MM88888M...........
-..........MD888DMM888888888M+++MD88888888MMM8888MM..........
-......... M8888MDM888888888MMMMM8888888888MM88888M..........
-..........MMD88MDM88888888MM...,MN88888888MM8888M...........
-... .   .    .~8MMMNDZ~..............78NMMMD7.... ... . ...."""
 print "***********************************************************************"
 print "* Parsing Nessus File: " + nessus_root.tag
 print "* Be sure to set the appropriate timeout or you may see False negatives"
 print "* False Positives are tagged with FALSE POSITIVE"
 print "* Remove false positives with the --removefalsepositive argument"
-#print "* Use --thread to multithread your testing"
 print "* Validation output is stored in the Nessus file"
 print "* Thanks for using Validator, Author: Scott Busby"
 print "***********************************************************************"
@@ -98,9 +46,6 @@ DNS = dnsvulns.DNSVulns()
 SMB = smbvulns.SMBVulns()
 MS = microsoftvulns.MicrosoftVulns()
 SSH = sshvulns.SSHVulns()
-
-
-
 
 # Remove all items tagged as False Positive
 if args.removefalsepositive:
@@ -117,7 +62,7 @@ if args.listhost:
         print host.get('name')
 
 # ***Testing*** Remove all informational findings
-# Not programmatically correct, Needs to remove all issues with informational status in a single pass.
+# Not programmtically correct, Needs to remove all issues with informational status in a single pass.
 # Run this multiple times until all informationals are removed.
 if args.removeinfo:
     for host in nessus.iter('ReportHost'):
@@ -132,27 +77,25 @@ if args.removeinfo:
 
 # Find All hosts in the file and validate what vulnerabilities we can for each!
 if args.file and not args.testssl and not args.timestamp and not args.removeinfo and not args.listhost and not args.removefalsepositive:
-
     for host in nessus.iter('ReportHost'):
         ipaddress = host.get('name')
-        # All plugins
         for issue in host.iter('ReportItem'):
             port = issue.get('port')
 
-            # SMB Vulnerabilities
+# SMB Vulnerabilities
             if issue.get('pluginID') == '57608':  # SMB Signing Disabled
                 SMB.smb_sign_disabled(ipaddress, issue)
 
-                # DNS Vulnerabilities
+# DNS Vulnerabilities
             elif issue.get('pluginID') == '12217':  # DNS Server allows cache snooping
                 protocol = issue.get('protocol')
                 DNS.dns_cache_snoop(protocol, ipaddress, port, issue)
 
-                # Microsoft Vulnerabilities
+# Microsoft Vulnerabilities
             elif issue.get('pluginID') == '34477':  # MS08-067
                 MS.ms08_067(ipaddress, port, issue)
 
-                # SSH Vulnerabilities
+# SSH Vulnerabilities
             elif issue.get('pluginID') == '90317':  # Weak SSH Algorithms
                 SSH.ssh_weak_algos(ipaddress, port, issue)
             elif issue.get('pluginID') == '70658':  # CBC Mode Ciphers Enabled
@@ -160,36 +103,32 @@ if args.file and not args.testssl and not args.timestamp and not args.removeinfo
             elif issue.get('pluginID') == '71049':  # Weak MAC Algorithms Enabled
                 SSH.ssh_hmac(ipaddress, port, issue)
 
-                # Misc Vulnerabilities
+# Misc Vulnerabilities
             elif issue.get('pluginID') == '25220':  # TCP Timestamp Supported
                 MISC.tcpts_response(ipaddress, issue)
-            elif issue.get('pluginID') == '41028' or issue.get(
-                    'pluginID') == '10264':  # SNMP has default community string Public
+            elif issue.get('pluginID') == '41028' or issue.get('pluginID') == '10264':  # SNMP has default community string Public
                 MISC.snmp_default_public(ipaddress, issue)
             elif issue.get('pluginID') == '11213':  # HTTP TRACE method enabled
                 MISC.http_trace(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '88098':  # Apache ETag Header
                 MISC.http_etag(ipaddress, port, issue, timeout)
-            elif issue.get('svc_name') == 'ntp' and issue.get(
-                    'port') == '123':  # Gathers data for all NTP based issues on port 123
+            elif issue.get('svc_name') == 'ntp' and issue.get('port') == '123':  # Gathers data for all NTP based issues on port 123
                 protocol = issue.get('protocol')
                 MISC.ntp_issues(protocol, ipaddress, port, issue)
-            elif issue.get('svc_name') == 'netbios-ns':  # Gathers data for all netbios-ns based issues
+            elif issue.get('svc_name') == 'netbios-ns': # Gathers data for all netbios-ns based issues
                 MISC.nb_issues(ipaddress, port, issue)
-            elif issue.get('svc_name') == 'cifs':  # Gathers data for all CIFS based issues
+            elif issue.get('svc_name') == 'cifs': # Gathers data for all CIFS based issues
                 MISC.cifs_issues(ipaddress, port, issue)
             elif issue.get('pluginID') == '10079':  # Anonymous FTP Login
                 MISC.ftp_anon(ipaddress, port, issue)
-            elif issue.get('pluginID') == '94437' or issue.get('pluginID') == '26928' or issue.get(
-                    'pluginID') == '42873':  # Misc SSL/TLS issues
+            elif issue.get('pluginID') == '94437' or issue.get('pluginID') == '26928' or issue.get('pluginID') == '42873':  # Misc SSL/TLS issues
                 MISC.ssl_cipher_misc(ipaddress, port, issue, timeout)
 
-                # SSL Vulnerabilities
-            elif issue.get('pluginID') == '57582' or issue.get('pluginID') == '45411' or issue.get(
-                    'pluginID') == '51192':  # SSL Certificate is Self Signed or untrusted
+
+# SSL Vulnerabilities
+            elif issue.get('pluginID') == '57582' or issue.get('pluginID') == '45411' or issue.get('pluginID') == '51192':  # SSL Certificate is Self Signed or untrusted
                 SSL.ssl_self_signed(ipaddress, port, issue, timeout)
-            elif issue.get('pluginID') == '78479' or issue.get(
-                    'pluginID') == '80035':  # SSL/TLS Server vulnerable to SSL/TLS POODLE
+            elif issue.get('pluginID') == '78479' or issue.get('pluginID') == '80035':  # SSL/TLS Server vulnerable to SSL/TLS POODLE
                 SSL.ssl_poodle(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '35291':  # SSL Certificate uses weak signature algorithms
                 SSL.cert_weak_algor(ipaddress, port, issue, timeout)
@@ -197,8 +136,7 @@ if args.file and not args.testssl and not args.timestamp and not args.removeinfo
                 SSL.sslv2_DROWN(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '20007':  # SSL Version 2 and/or 3 enabled
                 SSL.ssl_v2v3(ipaddress, port, issue, timeout)
-            elif issue.get('pluginID') == '83738' or issue.get(
-                    'pluginID') == '83875':  # SSL Server vulnerable to LOGJAM
+            elif issue.get('pluginID') == '83738' or issue.get('pluginID') == '83875':  # SSL Server vulnerable to LOGJAM
                 SSL.ssl_logjam(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '81606':  # SSL Server vulnerable to FREAK
                 SSL.ssl_freak(ipaddress, port, issue, timeout)
@@ -208,22 +146,16 @@ if args.file and not args.testssl and not args.timestamp and not args.removeinfo
                 SSL.openssl_heartbleed(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '73412':  # OpenSSL CCS
                 SSL.openssl_CCS(ipaddress, port, issue, timeout)
-            elif issue.get('pluginID') == '62565':  # TLS CRIME
-                SSL.tls_crime(ipaddress, port, issue, timeout)
-
-
 
 # Only validate SSL Vulnerabilities
 elif args.file and args.testssl:
     for host in nessus.iter('ReportHost'):
+        ipaddress = host.get('name')
         for issue in host.iter('ReportItem'):
-            ipaddress = host.get('name')
             port = issue.get('port')
-            if issue.get('pluginID') == '57582' or issue.get('pluginID') == '45411' or issue.get(
-                    'pluginID') == '51192':  # SSL Certificate is Self Signed or untrusted
+            if issue.get('pluginID') == '57582' or issue.get('pluginID') == '45411' or issue.get('pluginID') == '51192':  # SSL Certificate is Self Signed or untrusted
                 SSL.ssl_self_signed(ipaddress, port, issue, timeout)
-            elif issue.get('pluginID') == '78479' or issue.get(
-                    'pluginID') == '80035':  # SSL/TLS Server vulnerable to SSL/TLS POODLE
+            elif issue.get('pluginID') == '78479' or issue.get('pluginID') == '80035':  # SSL/TLS Server vulnerable to SSL/TLS POODLE
                 SSL.ssl_poodle(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '35291':  # SSL Certificate uses weak signature algorithms
                 SSL.cert_weak_algor(ipaddress, port, issue, timeout)
@@ -231,8 +163,7 @@ elif args.file and args.testssl:
                 SSL.sslv2_DROWN(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '20007':  # SSL Version 2 and/or 3 enabled
                 SSL.ssl_v2v3(ipaddress, port, issue, timeout)
-            elif issue.get('pluginID') == '83738' or issue.get(
-                    'pluginID') == '83875':  # SSL Server vulnerable to LOGJAM
+            elif issue.get('pluginID') == '83738' or issue.get('pluginID') == '83875':  # SSL Server vulnerable to LOGJAM
                 SSL.ssl_logjam(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '81606':  # SSL Server vulnerable to FREAK
                 SSL.ssl_freak(ipaddress, port, issue, timeout)
@@ -242,12 +173,6 @@ elif args.file and args.testssl:
                 SSL.openssl_heartbleed(ipaddress, port, issue, timeout)
             elif issue.get('pluginID') == '73412':  # OpenSSL CCS
                 SSL.openssl_CCS(ipaddress, port, issue, timeout)
-            elif issue.get('pluginID') == '62565':  # TLS CRIME
-                SSL.tls_crime(ipaddress, port, issue, timeout)
-
-
-
-
 
 # Only test TCP Timestamp Responses
 elif args.file and args.timestamp:
@@ -258,8 +183,6 @@ elif args.file and args.timestamp:
             if issue.get('pluginID') == '25220':  # TCP Timestamp Supported
                 MISC.tcpts_response(ipaddress, issue)
 
+
 # Write all changes back to the orginal Nessus file
 nessus.write(args.file)
-print "Changes saved to Nessus File."
-
-# Add finding that states Validator completed.
