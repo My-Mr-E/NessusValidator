@@ -239,20 +239,21 @@ if args.file and not args.testssl and not args.timestamp and not args.removeinfo
 
     for host in nessus.iter('ReportHost'):
         ipaddress = host.get('name')
-        pool = Pool(processes=int(args.thread))  # Create the processor pool, Begin multi-processing
-        pool.map(plugins,host)
-        pool.close()  # Close the pool
-        pool.join()
+        plugins(host)
+        # pool = Pool(processes=int(args.thread))  # Create the processor pool, Begin multi-processing
+        # pool.map(plugins,host)
+        # pool.close()  # Close the pool
+        # pool.join()
 
 
 # Only validate SSL Vulnerabilities
 elif args.file and args.testssl:
     for host in nessus.iter('ReportHost'):
         ipaddress = host.get('name')
-        pool = Pool(processes=int(args.thread))  # Create the processor pool
-        pool.map(ssl_plugins, host)
-        pool.close()  # Close the pool
-        pool.join()
+        # pool = Pool(processes=int(args.thread))  # Create the processor pool
+        # pool.map(ssl_plugins, host)
+        # pool.close()  # Close the pool
+        # pool.join()
 
 # Only test TCP Timestamp Responses
 elif args.file and args.timestamp:
