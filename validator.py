@@ -8,6 +8,7 @@ from modules import dnsvulns
 from modules import microsoftvulns
 from modules import sshvulns
 
+Version = '2.0'
 # Arguments obviously...
 parser = argparse.ArgumentParser(description='Nessus scan validation tool.')
 parser.add_argument('-f','--file', help='Input Nessus File',required=True)
