@@ -84,8 +84,8 @@ class MiscValidations:
         cmd = "enum4linux {0}".format(str(ipaddress))
         command = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, err = command.communicate()
-
-        cifs_match = re.findall(cifs_pattern, output)
+        output1 = re.sub(sweep_up1, '', output)
+        cifs_match = re.findall(cifs_pattern, output1)
         plug_out = issue.findall('plugin_output')
         if cifs_match:
             # Checking if Nessus plugin output already exists, if so, replace it! If not create a new plugin_output.
@@ -93,7 +93,7 @@ class MiscValidations:
                 for plug in plug_out:
                     plug.text = output
             else:
-                SubElementWithText(issue, 'plugin_output', output)
+                SubElementWithText(issue, 'plugin_output', output1)
 
             print "Gathered CIFS Evidence!"
         else:
@@ -115,8 +115,8 @@ class MiscValidations:
         command = subprocess.Popen(["nmap", "-sU", "--script=nbstat", "-p" + str(port), str(ipaddress)],
                                        stdout=subprocess.PIPE)
         output, err = command.communicate()
-
-        nb_match = re.findall(nb_pattern, output)
+        output1 = re.sub(sweep_up1, '', output)
+        nb_match = re.findall(nb_pattern, output1)
         plug_out = issue.findall('plugin_output')
         if nb_match:
             # Checking if Nessus plugin output already exists, if so, replace it! If not create a new plugin_output.
@@ -124,7 +124,7 @@ class MiscValidations:
                 for plug in plug_out:
                     plug.text = output
             else:
-                SubElementWithText(issue, 'plugin_output', output)
+                SubElementWithText(issue, 'plugin_output', output1)
 
             print "Gathered Netbios Evidence!"
         else:
@@ -150,8 +150,8 @@ class MiscValidations:
             command = subprocess.Popen(["nmap", "--script=ntp-info", "-p" + str(port), str(ipaddress)],
                                        stdout=subprocess.PIPE)
             output, err = command.communicate()
-
-        ntp_match = re.findall(ntp_pattern, output)
+        output1 = re.sub(sweep_up1, '', output)
+        ntp_match = re.findall(ntp_pattern, output1)
         plug_out = issue.findall('plugin_output')
         if ntp_match:
             # Checking if Nessus plugin output already exists, if so, replace it! If not create a new plugin_output.
@@ -159,7 +159,7 @@ class MiscValidations:
                 for plug in plug_out:
                     plug.text = output
             else:
-                SubElementWithText(issue, 'plugin_output', output)
+                SubElementWithText(issue, 'plugin_output', output1)
 
             print "Gathered NTP Evidence!"
         else:
@@ -189,8 +189,8 @@ class MiscValidations:
                                                                                    str(timeout))
             command = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             output, err = command.communicate()
-
-        http_etag_match = re.findall(http_etag_pattern, output)
+        output1 = re.sub(sweep_up1, '', output)
+        http_etag_match = re.findall(http_etag_pattern, output1)
         plug_out = issue.findall('plugin_output')
         if http_etag_match:
             # Checking if Nessus plugin output already exists, if so, replace it! If not create a new plugin_output.
@@ -198,7 +198,7 @@ class MiscValidations:
                 for plug in plug_out:
                     plug.text = output
             else:
-                SubElementWithText(issue, 'plugin_output', output)
+                SubElementWithText(issue, 'plugin_output', output1)
 
             print "Host has HTTP ETag in header!"
         else:
