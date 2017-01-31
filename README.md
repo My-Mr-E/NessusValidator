@@ -58,7 +58,6 @@ The following vulnerabilities are currently supported by validator:
 * Gathers NTP info for NTP based vulnerabilities
 * Gathers Netbios information for NB based vulnerabilities
 * Gathers CIFS Information for CIFS based vulnerabilities (including Badlock)
-* Gathers info for SSL/TLS SWEET32 and Medium & weak strength ciphers
 
 
 ## HOW-TO
@@ -90,7 +89,6 @@ Example: ./validator.py -f "nessusfile.nessus" --listhost
                         DANGEROUS!!! Removes false positive entries from the
                         Nessus file
 
- --thread THREAD       Multi-process the validation process
 
 ## TO-DO
 
@@ -99,7 +97,7 @@ Example: ./validator.py -f "nessusfile.nessus" --listhost
 * (Completed)Add the ability to create a host list
 * Add the ability to export validations to a different file
 * Add selective validation
-* (Completed)Multi-processing the validations to speed the process
+* Multi-processing the validations to speed the process
 * Possibly perform validation tasks for other scanners
 * HTML reporting
 * CSV Exporting
