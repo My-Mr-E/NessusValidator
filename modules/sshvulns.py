@@ -43,7 +43,7 @@ class SSHVulns:
         ssh_cbc_pattern = re.compile(r"-cbc")
 
         # Output showing that its doing things...
-        print "Using NMAP to check for weak ssh algorithms on " + ipaddress + " port " + port + "."
+        print "Using NMAP to check for weak ssh CBC algorithms on " + ipaddress + " port " + port + "."
         command = subprocess.Popen(["nmap", "--script=ssh2-enum-algos", "-p" + str(port), str(ipaddress)],
                                        stdout=subprocess.PIPE)
         output, err = command.communicate()
