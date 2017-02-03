@@ -1,8 +1,7 @@
 #! /usr/bin/python
 
 import xml.etree.ElementTree as ET,argparse
-from modules.helper import findingCheck
-import subprocess, os
+from modules import helper
 
 
 Version = '2.0'
@@ -14,6 +13,9 @@ parser.add_argument('-f','--file', help='Input Nessus File',required=True)
 parser.add_argument('--timeout',help='Set the timeout for tests that tend to hang up',default=6,required=False)
 parser.add_argument('--tag',help='Tags False Positives with "FALSE POSITIVE"',action="store_true",default=False,required=False)
 parser.add_argument('--verbose',help='Set the timeout for tests that tend to hang up',action="store_true",default=False,required=False)
+parser.add_argument('--removeinfo',help='Remove Informational findings from the Nessus file',action="store_true",default=False,required=False)
+parser.add_argument('--listhost',help='Prints a list of live hosts from scan results',action="store_true",default=False,required=False)
+parser.add_argument('--removefalsepositive',help='DANGEROUS!!! Removes false positive entries from the Nessus file',action="store_true",default=False,required=False)
 
 args = parser.parse_args()
 
@@ -42,41 +44,54 @@ print "* Validation output is stored in the Nessus file"
 print "* Thanks for using Validator, Author: Scott Busby"
 print "***********************************************************************"
 
-# Plugin Dictionary *Plugin:Regex* key/value pairs
-pluginList = {
 
-    # Misc Vulnerabilities
-#    '57608': {'regex': 'r"message_signing:\s(disabled)"','command': '"nmap --script=smb-security-mode -p{0} {1} & sleep {2};kill $!"','UDPcommand': '"nmap -sU --script=smb-security-mode -p{0} {1} & sleep {2};kill $!"'}, # SMB Signing Disabled
-#    '12217': {'regex': 'r"dns-cache-snoop:\s([1-9]+)\s"','command': '"nmap --script=dns-cache-snoop -p{0} {1} & sleep {2};kill $!"','UDPcommand': '"nmap -sU --script=dns-cache-snoop -p{0} {1} & sleep {2};kill $!"'},  # DNS Server allows cache snooping
-#    '34477': {'regex': 'r"(VULNERABLE)\s"','command':'SDFASDFf'},  # MS08-067
 
-    # SSH Vulnerabilities
-#    '90317': {'regex': 'r"arcfour"','command':'"nmap --script=ssh2-enum-algos -p{0} {1} & sleep {2};kill $!"'},  # Weak SSH Algorithms
-    '90317': {'regex': 'r"arcfour"','command':"'nmap --script=ssh2-enum-algos -p{0} {1} & sleep {2};kill $!'"},  # TEST!!!!!
-#    '70658': {'regex': 'r"-cbc"','command':'"nmap --script=ssh2-enum-algos -p{0} {1} & sleep {2};kill $!"'},  # CBC Mode Ciphers Enabled
-#    '71049': {'regex': 'r"hmac"','command':'"nmap --script=ssh2-enum-algos -p{0} {1} & sleep {2};kill $!"'},  # Weak MAC Algorithms Enabled
-}
+# ***Testing*** Remove all informational findings
+# Not programmtically correct, Needs to remove all issues with informational status in a single pass.
+# Run this multiple times until all informationals are removed.
+if args.removeinfo:
+    for host in nessus.iter('ReportHost'):
+        for issue in host.iter('ReportItem'):
+            if issue.get('severity') == '0':
+                print "Removed:" + issue.get('pluginName')
+                host.remove(issue)
+        for issue in host.iter('ReportItem'):
+            severity = issue.get('severity')
+            if severity == '0':
+                print "Run again to remove: " + issue.get('pluginName')
+
+# Prints a list of live hosts from the Nessus scan data
+if args.listhost:
+    for host in nessus.iter('ReportHost'):
+        print host.get('name')
+
+# Remove all items tagged as False Positive
+if args.removefalsepositive:
+    for host in nessus.iter('ReportHost'):
+        for issue in host.iter('ReportItem'):
+            for f in issue.findall('plugin_output'):
+                if f.text == 'FALSE POSITIVE':
+                    print "Removed False Positive: " + issue.get('pluginName')
+                    host.remove(issue)
+
 
 # Find All hosts in the file and validate what vulnerabilities we can for each!
-if args.file:
+if args.file and not args.removeinfo and not args.listhost and not args.removefalsepositive:
     for host in nessus.iter('ReportHost'):
         ipaddress = host.get('name')
         for issue in host.iter('ReportItem'):
             port = issue.get('port')
             protocol = issue.get('protocol')
-            if pluginList.has_key(issue.get('pluginID')):
+            if helper.pluginList.has_key(issue.get('pluginID')):
                 plugin = issue.get('pluginID')
-                pattern = pluginList[plugin]['regex']
+                pattern = helper.pluginList[plugin]['regex']
+                print "Now testing: " + issue.get('pluginName')
                 if protocol == 'udp':
-                    cmd = pluginList[plugin]['UDPcommand']
+                    cmd = helper.pluginList[plugin]['UDPcommand']
                 else:
-                    cmd = pluginList[plugin]['command']
-# ONLY FOR TESTING
-                print "Initial Reg is : " + pluginList[plugin]['regex']
-                print "Initial command is: " + pluginList[plugin]['command']
+                    cmd = helper.pluginList[plugin]['command']
 
-
-                findingCheck(plugin,issue,pattern,cmd,ipaddress,port,protocol,timeout,tag,verbose)
+                helper.findingCheck(issue,pattern,cmd,ipaddress,port,timeout,tag,verbose)
 
 
 
