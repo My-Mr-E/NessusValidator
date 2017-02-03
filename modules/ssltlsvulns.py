@@ -14,6 +14,12 @@ def SubElementWithText(parent, tag, text):
     element.text = text
     return element
 
+
+
+
+
+
+
 # Class containing all SSL/TLS Validations
 class SSLTLSChecks:
 
