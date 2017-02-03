@@ -2,7 +2,15 @@
 
 Validator is designed to automatically read in a .nessus file exported from a Nessus scan and perform various validation tasks, then replace the Nessus plugin output with manual validation output.
 
-Version: 1.0.39
+Version: 2.0dev
+
+## Version Changes
+
+Version 2.0 is a complete rewrite of the tool. List of changes are below,
+
+* The tool now uses a dictionary to manage the plugin data and commands.
+* verbose option added for execution verbositiy (This will help to test if the timeout is correct)
+* Added a tag option to optionally tag false positives as false potiives for removal later.
 
 ## Currenly supported vulnerabilities/validations
 
