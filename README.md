@@ -9,7 +9,7 @@ Version: 2.0dev
 Version 2.0 is a complete rewrite of the tool. List of changes are below,
 
 * The tool now uses a dictionary to manage the plugin data and commands.
-* verbose option added for execution verbositiy (This will help to test if the timeout is correct)
+* verbose option added for execution verbosity (This will help to test if the timeout is correct)
 * Added a tag option to optionally tag false positives as false potiives for removal later.
 
 ## Currenly supported vulnerabilities/validations

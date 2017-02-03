@@ -38,8 +38,9 @@ nessus_root = nessus.getroot()
 print "***********************************************************************"
 print "* Parsing Nessus File: " + nessus_root.tag
 print "* Be sure to set the appropriate timeout or you may see False negatives"
-print "* False Positives are tagged with FALSE POSITIVE"
+print "* False Positives are tagged with FALSE POSITIVE by using --tag"
 print "* Remove false positives with the --removefalsepositive argument"
+print "* View verbose output for plugins using --verbose"
 print "* Validation output is stored in the Nessus file"
 print "* Thanks for using Validator, Author: Scott Busby"
 print "***********************************************************************"
@@ -93,6 +94,8 @@ if args.file and not args.removeinfo and not args.listhost and not args.removefa
 
                 helper.findingCheck(issue,pattern,cmd,ipaddress,port,timeout,tag,verbose)
 
+                # Write all changes back to the orginal Nessus file
+                nessus.write(args.file)
 
 
 
