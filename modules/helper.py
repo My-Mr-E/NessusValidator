@@ -49,8 +49,7 @@ pluginList = {
 
 # Create an XML SubElement with sselected text inside
 def SubElementWithText(parent, tag, text):
-    attrib = {}
-    element = parent.makeelement(tag, attrib)
+    element = parent.makeelement(tag)
     parent.append(element)
     element.text = text
     return element
