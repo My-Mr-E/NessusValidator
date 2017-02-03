@@ -3,9 +3,7 @@
 import xml.etree.ElementTree as ET,argparse
 from modules import helper
 
-
 Version = '2.0'
-
 
 # Arguments obviously...
 parser = argparse.ArgumentParser(description='Nessus scan validation tool.')
@@ -44,8 +42,6 @@ print "* View verbose output for plugins using --verbose"
 print "* Validation output is stored in the Nessus file"
 print "* Thanks for using Validator, Author: Scott Busby"
 print "***********************************************************************"
-
-
 
 # ***Testing*** Remove all informational findings
 # Not programmtically correct, Needs to remove all issues with informational status in a single pass.
@@ -97,10 +93,4 @@ if args.file and not args.removeinfo and not args.listhost and not args.removefa
                 # Write all changes back to the orginal Nessus file
                 nessus.write(args.file)
 
-
-
-
-
-
-
-
+nessus.write(args.file)

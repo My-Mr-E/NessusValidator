@@ -44,8 +44,8 @@ pluginList = {
     ## 11213 NEEDS REVIEW
     '11213': {'regex': 'TRACE\sis\s(enabled)','command':"''nmap --script=http-trace -p{0} {1} & sleep {2};kill $!''"},  # HTTP TRACE
     '88098': {'regex': '[eE][tT]ag:','command':"''curl --insecure -I https://{0}:{1} & sleep {2};kill $!''"},  # Anonymous FTP Login Enabled
-
 }
+
 
 # Create an XML SubElement with sselected text inside
 def SubElementWithText(parent, tag, text):
@@ -53,6 +53,7 @@ def SubElementWithText(parent, tag, text):
     parent.append(element)
     element.text = text
     return element
+
 
 # Finding output control
 def match(issue,regex,output,tag,verbose):
