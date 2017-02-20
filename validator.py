@@ -52,6 +52,7 @@ print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* False Positives are tagg
 print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Remove false positives with the --removefalsepositive argument" + helper.bcolors.ENDC
 print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* View verbose output for plugins using --verbose" + helper.bcolors.ENDC
 print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Validation output is stored in the Nessus file" + helper.bcolors.ENDC
+print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Update the tool with --update" + helper.bcolors.ENDC
 print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Thanks for using Validator, Author: Scott Busby" + helper.bcolors.ENDC
 print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "***********************************************************************" + helper.bcolors.ENDC
 

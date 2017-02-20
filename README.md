@@ -17,6 +17,7 @@ Version 2.0 is a complete rewrite of the tool. List of changes are below,
 * Added a tag option to optionally tag false positives as false potiives for removal later.
 * Added colors!
 * Removed the existing selective validations.
+* Added the ability to update.
 
 ## Currenly supported vulnerabilities/validations
 
@@ -104,27 +105,30 @@ The following vulnerabilities are currently supported by validator:
 3. Validate easier!
 
 
+```
 Example: ./validator.py -f "nessusfile.nessus"
 
 Example: ./validator.py -f "nessusfile.nessus" --listhost
 
+usage: validator.py [-h] [-f FILE] [--timeout TIMEOUT] [--tag] [--verbose]
+                    [--removeinfo] [--listhost] [--removefalsepositive]
+                    [--update]
+
+Nessus scan validation tool.
+
+optional arguments:
   -h, --help            show this help message and exit
-  
   -f FILE, --file FILE  Input Nessus File
-  
-  --tag                 Tags False Positives with "FALSE POSITIVE"
-  
-  --verbose             Shows test output data
-  
   --timeout TIMEOUT     Set the timeout for tests that tend to hang up
-  
+  --tag                 Tags False Positives with "FALSE POSITIVE"
+  --verbose             Shows test output data
   --removeinfo          Remove Informational findings from the Nessus file
-  
   --listhost            Prints a list of live hosts from scan results
-  
   --removefalsepositive
                         DANGEROUS!!! Removes false positive entries from the
                         Nessus file
+  --update              Updates the tool
+  ```
                         
 
 
@@ -139,7 +143,7 @@ Example: ./validator.py -f "nessusfile.nessus" --listhost
 * Possibly perform validation tasks for other scanners
 * HTML reporting
 * CSV Exporting
-* Add update functionality
+* (Completed)Add update functionality
 * Add compatibility for multiple OS's
 * Probably a lot more I'm forgetting...
 
