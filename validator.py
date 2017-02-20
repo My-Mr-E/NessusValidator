@@ -20,7 +20,7 @@ args = parser.parse_args()
 
 # Update functionality
 if args.update and not args.file:
-    os.system('wget -O /modules/helper.py https://raw.githubusercontent.com/p3rll/validator/master/modules/helper.py')
+    os.system('wget -O modules/helper.py https://raw.githubusercontent.com/p3rll/validator/master/modules/helper.py')
     os.system('wget -O validator.py https://raw.githubusercontent.com/p3rll/validator/master/validator.py')
     os.system('wget -O setup.py https://raw.githubusercontent.com/p3rll/validator/master/setup.py')
     os.system('wget -O README.md https://raw.githubusercontent.com/p3rll/validator/master/README.md')
