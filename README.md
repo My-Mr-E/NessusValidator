@@ -2,7 +2,7 @@
 
 Validator is a modular validation framework designed to automatically read in a .nessus file exported from a Nessus scan and perform various validation tasks, then replace the Nessus plugin output with manual validation output.
 
-Version: 2.0dev
+Version: 2.0
 
 ## Warning
 

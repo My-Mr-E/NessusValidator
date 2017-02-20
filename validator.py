@@ -1,6 +1,6 @@
 #! /usr/bin/python
 
-import xml.etree.ElementTree as ET,argparse
+import xml.etree.ElementTree as ET,argparse, os
 from modules import helper
 
 Version = '2.0'
@@ -14,6 +14,7 @@ parser.add_argument('--verbose',help='Shows test output data',action="store_true
 parser.add_argument('--removeinfo',help='Remove Informational findings from the Nessus file',action="store_true",default=False,required=False)
 parser.add_argument('--listhost',help='Prints a list of live hosts from scan results',action="store_true",default=False,required=False)
 parser.add_argument('--removefalsepositive',help='DANGEROUS!!! Removes false positive entries from the Nessus file',action="store_true",default=False,required=False)
+parser.add_argument('--update',help='Updates the tool',action="store_true",default=False,required=False)
 
 args = parser.parse_args()
 
@@ -44,6 +45,13 @@ print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* View verbose output for 
 print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Validation output is stored in the Nessus file" + helper.bcolors.ENDC
 print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Thanks for using Validator, Author: Scott Busby" + helper.bcolors.ENDC
 print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "***********************************************************************" + helper.bcolors.ENDC
+
+if args.update and not args.file:
+    os.system('wget -O /modules/helper.py https://raw.githubusercontent.com/p3rll/validator/master/modules/helper.py')
+    os.system('wget -O validator.py https://github.com/p3rll/validator/blob/master/validator.py')
+    os.system('wget -O setup.py https://raw.githubusercontent.com/p3rll/validator/master/setup.py')
+    os.system('wget -O README.md https://raw.githubusercontent.com/p3rll/validator/master/README.md')
+    os.system('python setup.py')
 
 # ***Testing*** Remove all informational findings
 # Not programmtically correct, Needs to remove all issues with informational status in a single pass.

@@ -1,7 +1,7 @@
 import subprocess,re
 
 # Clean up output from first scan results
-cleanUp = re.compile(r"&gt;|&lt;|(\[0;33m)|(\[0;31m)|<|>|-|\/bin.*|\"|\'")
+cleanUp = re.compile(r"&gt;|&lt;|(\[0;33m)|(\[0;31m)|<|>|-|\/bin.*|\"|\'|\[[0-9]{1,2}m")
 
 class bcolors:
     HEADER = '\033[95m'
@@ -47,7 +47,7 @@ pluginList = {
 
     # SSH Vulnerabilities
     '90317': {'regex': 'arcfour','command':"''nmap --script=ssh2-enum-algos -p{0} {1} & sleep {2};kill $!''"},  # Weak SSH Algorithms
-    '70658': {'regex': '-cbc','command':"''nmap --script=ssh2-enum-algos -p{0} {1} & sleep {2};kill $!''"},  # CBC Mode Ciphers Enabled
+    '70658': {'regex': 'cbc','command':"''nmap --script=ssh2-enum-algos -p{0} {1} & sleep {2};kill $!''"},  # CBC Mode Ciphers Enabled
     '71049': {'regex': 'hmac','command':"''nmap --script=ssh2-enum-algos -p{0} {1} & sleep {2};kill $!''"},  # Weak MAC Algorithms Enabled
     '93650': {'regex': 'dropbear', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"}, # DropBear SSH
     '86122': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH MaxAuthTries Bypass
@@ -61,7 +61,7 @@ pluginList = {
     '89058': {'regex': '[vV][uU][lL][nN][eE][rR][aA][bB][lL][eE]\s(\(NOT\sok\))','command':"''./testssl.sh/testssl.sh --quiet --color 0 -D {1}:{0} & sleep {2};kill $!''"},  # SSL Drown
     '78479': {'regex': '[vV][uU][lL][nN][eE][rR][aA][bB][lL][eE]\s(\(NOT\sok\))','command':"''./testssl.sh/testssl.sh --quiet --color 0 -O {1}:{0} & sleep {2};kill $!''"},  # SSL Poodle
     '80035': {'regex': '[vV][uU][lL][nN][eE][rR][aA][bB][lL][eE]\s(\(NOT\sok\))','command':"''./testssl.sh/testssl.sh --quiet --color 0 -O {1}:{0} & sleep {2};kill $!''"},  # SSL Poodle 2
-    '35291': {'regex': 'SHA1\swith\sRSA','command':"''./testssl.sh/testssl.sh --quiet --color 0 -O {1}:{0} & sleep {2};kill $!''"},  # Weak Signature Algorithms
+    '35291': {'regex': 'SHA1\swith\sRSA','command':"''./testssl.sh/testssl.sh --quiet --color 0 -S {1}:{0} & sleep {2};kill $!''"},  # Weak Signature Algorithms
     '83738': {'regex': '[vV][uU][lL][nN][eE][rR][aA][bB][lL][eE]\s(\(NOT\sok\))','command':"''./testssl.sh/testssl.sh --quiet --color 0 -J {1}:{0} & sleep {2};kill $!''"},  # Logjam
     '83875': {'regex': '[vV][uU][lL][nN][eE][rR][aA][bB][lL][eE]\s(\(NOT\sok\))','command':"''./testssl.sh/testssl.sh --quiet --color 0 -J {1}:{0} & sleep {2};kill $!''"},  # Logjam 2
     '81606': {'regex': '[vV][uU][lL][nN][eE][rR][aA][bB][lL][eE]\s(\(NOT\sok\))','command':"''./testssl.sh/testssl.sh --quiet --color 0 -F {1}:{0} & sleep {2};kill $!''"},  # SSL Freak
