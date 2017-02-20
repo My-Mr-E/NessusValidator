@@ -1,4 +1,5 @@
-import subprocess, re
+import subprocess, re, os
+
 nmap_version = '7.40'
 testssl_version = '2.8'
 
@@ -43,10 +44,7 @@ def testSSL(testssl_version):
         print "Correct TestSSL Version exists..."
     else:
         print "Downloading Correct Version of TestSSL..."
-        testssl = "git clone https://github.com/p3rll/testssl.sh.git"
-        command = subprocess.Popen(testssl, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        output, err = command.communicate()
-        print output
+        os.system("git clone https://github.com/p3rll/testssl.sh.git")
         print "TestSSL Download Completed..."
 
 def checkEnum4Linux():
@@ -60,10 +58,21 @@ def checkEnum4Linux():
     else:
         print "Please install Enum4linux"
 
+def rdp_sec_check():
+    print "Downloading rdp-sec-check"
+    os.system('https://github.com/p3rll/rdp-sec-check.git')
+    print 'Download Completed...'
+    print 'Installing requirements...'
+    os.system('cpan install Encoding::BER')
+    print 'rdp-sec-check setup completed.'
+
+
 systemUpdate()
+rdp_sec_check()
 nmapUpdate(nmap_version)
 testSSL(testssl_version)
 checkEnum4Linux()
 print ""
 print "Please report bugs via Github."
 print "Thanks for using Validator!"
+
