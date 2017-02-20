@@ -17,17 +17,17 @@ class bcolors:
 pluginList = {
 
     # NTP Vulnerabilities
-    '71783': {'regex': '(Vulnerable)','command': "''msfconsole -q -x 'use auxiliary/scanner/ntp/ntp_monlist;set rhosts {1};run;exit -y'''",'UDPcommand': "''msfconsole -q -x 'use auxiliary/scanner/ntp/ntp_monlist;set rhosts {1};run;exit -y'''"},  # VNC Default Password 'password'
+    '71783': {'regex': '(Vulnerable)','command': "''msfconsole -q -x 'use auxiliary/scanner/ntp/ntp_monlist;set rhosts {1};color false;run;exit -y'''",'UDPcommand': "''msfconsole -q -x 'use auxiliary/scanner/ntp/ntp_monlist;set rhosts {1};color false;run;exit -y'''"},  # VNC Default Password 'password'
 
     # VNC Vulnerabilities
-    '61708': {'regex': '(LOGIN\sSUCCESSFUL)','command': "''msfconsole -q -x 'use auxiliary/scanner/vnc/vnc_login;set rhosts {1};set rport {0};set password password;run;exit -y'''"},# VNC Default Password 'password'
+    '61708': {'regex': '(LOGIN\sSUCCESSFUL)','command': "''msfconsole -q -x 'use auxiliary/scanner/vnc/vnc_login;set rhosts {1};set rport {0};set password password;color false;run;exit -y'''"},# VNC Default Password 'password'
 
     # ESXi Vulnerabilities
-    '92949': {'regex': '(Identified.*.ESXi)', 'command': "''msfconsole -q -x 'use auxiliary/scanner/vmware/esx_firngerprint;set rhosts {1};run;exit -y'''"},  # ESXi Version
-    '81085': {'regex': '(Identified.*.ESXi)','command': "''msfconsole -q -x 'use auxiliary/scanner/vmware/esx_firngerprint;set rhosts {1};run;exit -y'''"},  # ESXi Poodle
-    '87942': {'regex': '(Identified.*.ESXi)','command': "''msfconsole -q -x 'use auxiliary/scanner/vmware/esx_firngerprint;set rhosts {1};run;exit -y'''"},  # ESXi Guest Privesc
-    '88906': {'regex': '(Identified.*.ESXi)','command': "''msfconsole -q -x 'use auxiliary/scanner/vmware/esx_firngerprint;set rhosts {1};run;exit -y'''"},  # ESXi DNS Resolver
-    '86947': {'regex': '(Identified.*.ESXi)','command': "''msfconsole -q -x 'use auxiliary/scanner/vmware/esx_firngerprint;set rhosts {1};run;exit -y'''"},  # ESXi 5.5 RCE
+    '92949': {'regex': '(Identified.*.ESXi)', 'command': "''msfconsole -q -x 'use auxiliary/scanner/vmware/esx_firngerprint;set rhosts {1};color false;run;exit -y'''"},  # ESXi Version
+    '81085': {'regex': '(Identified.*.ESXi)','command': "''msfconsole -q -x 'use auxiliary/scanner/vmware/esx_firngerprint;set rhosts {1};color false;run;exit -y'''"},  # ESXi Poodle
+    '87942': {'regex': '(Identified.*.ESXi)','command': "''msfconsole -q -x 'use auxiliary/scanner/vmware/esx_firngerprint;set rhosts {1};color false;run;exit -y'''"},  # ESXi Guest Privesc
+    '88906': {'regex': '(Identified.*.ESXi)','command': "''msfconsole -q -x 'use auxiliary/scanner/vmware/esx_firngerprint;set rhosts {1};color false;run;exit -y'''"},  # ESXi DNS Resolver
+    '86947': {'regex': '(Identified.*.ESXi)','command': "''msfconsole -q -x 'use auxiliary/scanner/vmware/esx_firngerprint;set rhosts {1};color false;run;exit -y'''"},  # ESXi 5.5 RCE
 
     # SMB Vulnerabilities
     '57608': {'regex': 'message_signing:\s(disabled)','command': "''nmap --script=smb-security-mode -p{0} {1} & sleep {2};kill $!''",'UDPcommand': "''nmap -sU --script=smb-security-mode -p{0} {1} & sleep {2};kill $!''"}, # SMB Signing Disabled
