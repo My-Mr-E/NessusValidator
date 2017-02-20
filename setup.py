@@ -51,7 +51,7 @@ def testSSL(testssl_version):
 
 def checkEnum4Linux():
     enum4linux_pattern = re.compile(r"enum4linux")
-    enum4linux_check = "ls /usr/bin/share |grep enum4linux"
+    enum4linux_check = "ls /usr/bin/ |grep enum4linux"
     command = subprocess.Popen(enum4linux_check, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     output,err = command.communicate()
     enum4linux_match = re.findall(enum4linux_pattern, str(output))

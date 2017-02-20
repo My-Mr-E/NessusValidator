@@ -4,6 +4,10 @@ Validator is a modular validation framework designed to automatically read in a 
 
 Version: 2.0dev
 
+## Warning
+
+Setup will perform a system update/upgrade
+
 ## Version Changes
 
 Version 2.0 is a complete rewrite of the tool. List of changes are below,
@@ -12,6 +16,7 @@ Version 2.0 is a complete rewrite of the tool. List of changes are below,
 * verbose option added for execution verbosity (This will help to test if the timeout is correct)
 * Added a tag option to optionally tag false positives as false potiives for removal later.
 * Added colors!
+* Removed the existing selective validations.
 
 ## Currenly supported vulnerabilities/validations
 

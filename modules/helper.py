@@ -17,7 +17,7 @@ class bcolors:
 pluginList = {
 
     # NTP Vulnerabilities
-    '71783': {'regex': '(Vulnerable)','command': "''msfconsole -q -x 'use auxiliary/scanner/ntp/ntp_monlist;set rhosts {1};run;exit -y'''"},  # VNC Default Password 'password'
+    '71783': {'regex': '(Vulnerable)','command': "''msfconsole -q -x 'use auxiliary/scanner/ntp/ntp_monlist;set rhosts {1};run;exit -y'''",'UDPcommand': "''msfconsole -q -x 'use auxiliary/scanner/ntp/ntp_monlist;set rhosts {1};run;exit -y'''"},  # VNC Default Password 'password'
 
     # VNC Vulnerabilities
     '61708': {'regex': '(LOGIN\sSUCCESSFUL)','command': "''msfconsole -q -x 'use auxiliary/scanner/vnc/vnc_login;set rhosts {1};set rport {0};set password password;run;exit -y'''"},# VNC Default Password 'password'
