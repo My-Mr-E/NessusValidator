@@ -7,7 +7,7 @@ Version = '2.0'
 
 # Arguments obviously...
 parser = argparse.ArgumentParser(description='Nessus scan validation tool.')
-parser.add_argument('-f','--file', help='Input Nessus File',required=True)
+parser.add_argument('-f','--file', help='Input Nessus File',required=False)
 parser.add_argument('--timeout',help='Set the timeout for tests that tend to hang up',default=6,required=False)
 parser.add_argument('--tag',help='Tags False Positives with "FALSE POSITIVE"',action="store_true",default=False,required=False)
 parser.add_argument('--verbose',help='Shows test output data',action="store_true",default=False,required=False)
@@ -17,6 +17,15 @@ parser.add_argument('--removefalsepositive',help='DANGEROUS!!! Removes false pos
 parser.add_argument('--update',help='Updates the tool',action="store_true",default=False,required=False)
 
 args = parser.parse_args()
+
+# Update functionality
+if args.update and not args.file:
+    os.system('wget -O /modules/helper.py https://raw.githubusercontent.com/p3rll/validator/master/modules/helper.py')
+    os.system('wget -O validator.py https://github.com/p3rll/validator/blob/master/validator.py')
+    os.system('wget -O setup.py https://raw.githubusercontent.com/p3rll/validator/master/setup.py')
+    os.system('wget -O README.md https://raw.githubusercontent.com/p3rll/validator/master/README.md')
+    os.system('python setup.py')
+    exit()
 
 # Timeout variable
 timeout = args.timeout
@@ -46,12 +55,6 @@ print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Validation output is sto
 print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Thanks for using Validator, Author: Scott Busby" + helper.bcolors.ENDC
 print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "***********************************************************************" + helper.bcolors.ENDC
 
-if args.update and not args.file:
-    os.system('wget -O /modules/helper.py https://raw.githubusercontent.com/p3rll/validator/master/modules/helper.py')
-    os.system('wget -O validator.py https://github.com/p3rll/validator/blob/master/validator.py')
-    os.system('wget -O setup.py https://raw.githubusercontent.com/p3rll/validator/master/setup.py')
-    os.system('wget -O README.md https://raw.githubusercontent.com/p3rll/validator/master/README.md')
-    os.system('python setup.py')
 
 # ***Testing*** Remove all informational findings
 # Not programmtically correct, Needs to remove all issues with informational status in a single pass.
