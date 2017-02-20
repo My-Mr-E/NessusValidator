@@ -1,7 +1,7 @@
 import subprocess,re
 
 # Clean up output from first scan results
-cleanUp = re.compile(r"&gt;|&lt;|(\[0;33m)|(\[0;31m)|<|>|-|\/bin.*|\"|\'|\[[0-9]{1,2}m|\^\[")
+cleanUp = re.compile(r"&gt;|&lt;|(\[0;33m)|(\[0;31m)|<|>|-|\/bin.*|\"|\'|.*.\[[0-9]{1,2}m|\^\[")
 
 class bcolors:
     HEADER = '\033[95m'
