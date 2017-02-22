@@ -14,6 +14,7 @@ parser.add_argument('--verbose',help='Shows test output data',action="store_true
 parser.add_argument('--removeinfo',help='Remove Informational findings from the Nessus file',action="store_true",default=False,required=False)
 parser.add_argument('--listhost',help='Prints a list of live hosts from scan results',action="store_true",default=False,required=False)
 parser.add_argument('--removefalsepositive',help='DANGEROUS!!! Removes false positive entries from the Nessus file',action="store_true",default=False,required=False)
+parser.add_argument('-b','--nobanner',help='Runs without the banner',action="store_true",default=False,required=False)
 parser.add_argument('--update',help='Updates the tool',action="store_true",default=False,required=False)
 
 args = parser.parse_args()
@@ -30,6 +31,9 @@ if args.update and not args.file:
 # Timeout variable
 timeout = args.timeout
 
+# Banner Variable
+banner = args.nobanner
+
 # Tag variable
 tag = args.tag
 
@@ -43,18 +47,21 @@ nessus = ET.parse(args.file)
 nessus_root = nessus.getroot()
 
 # Testing XML Parse - Printing the root tag of the Nessus file and Intro!
-print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "***********************************************************************" + helper.bcolors.ENDC
-print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Version: " + Version + helper.bcolors.ENDC
-print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Parsing Nessus File: " + args.file + helper.bcolors.ENDC
-print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Root Tag: " + nessus_root.tag + helper.bcolors.ENDC
-print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Be sure to set the appropriate timeout or you may see False negatives" + helper.bcolors.ENDC
-print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* False Positives are tagged with FALSE POSITIVE by using --tag" + helper.bcolors.ENDC
-print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Remove false positives with the --removefalsepositive argument" + helper.bcolors.ENDC
-print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* View verbose output for plugins using --verbose" + helper.bcolors.ENDC
-print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Validation output is stored in the Nessus file" + helper.bcolors.ENDC
-print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Update the tool with --update" + helper.bcolors.ENDC
-print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Thanks for using Validator, Author: Scott Busby" + helper.bcolors.ENDC
-print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "***********************************************************************" + helper.bcolors.ENDC
+if args.nobanner:
+    pass
+else:
+    print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "***********************************************************************" + helper.bcolors.ENDC
+    print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Version: " + Version + helper.bcolors.ENDC
+    print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Parsing Nessus File: " + args.file + helper.bcolors.ENDC
+    print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Root Tag: " + nessus_root.tag + helper.bcolors.ENDC
+    print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Be sure to set the appropriate timeout or you may see False negatives" + helper.bcolors.ENDC
+    print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* False Positives are tagged with FALSE POSITIVE by using --tag" + helper.bcolors.ENDC
+    print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Remove false positives with the --removefalsepositive argument" + helper.bcolors.ENDC
+    print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* View verbose output for plugins using --verbose" + helper.bcolors.ENDC
+    print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Validation output is stored in the Nessus file" + helper.bcolors.ENDC
+    print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Update the tool with --update" + helper.bcolors.ENDC
+    print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "* Thanks for using Validator, Author: Scott Busby" + helper.bcolors.ENDC
+    print helper.bcolors.OKGREEN + helper.bcolors.BOLD + "***********************************************************************" + helper.bcolors.ENDC
 
 
 # ***Testing*** Remove all informational findings
@@ -75,6 +82,7 @@ if args.removeinfo:
 if args.listhost:
     for host in nessus.iter('ReportHost'):
         print host.get('name')
+    exit()
 
 # Remove all items tagged as False Positive
 if args.removefalsepositive:
