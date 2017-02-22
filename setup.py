@@ -2,7 +2,7 @@ import subprocess, re, os
 from modules.helper import bcolors
 
 nmap_version = '7.40'
-testssl_version = '2.8'
+testssl_version = '2.9'
 
 def nmapUpdate(nmap_version):
     nmap_version_pattern = re.compile(r"Nmap\sversion\s([0-9]{1}.[0-9]{1,2})")
@@ -36,8 +36,7 @@ def testSSL(testssl_version):
         print bcolors.OKGREEN + bcolors.BOLD + "TestSSL Download Completed..." + bcolors.ENDC
     else:
         print bcolors.OKBLUE + bcolors.BOLD + "Checking TestSSL Version" + bcolors.ENDC
-        testssl_check = "cat testssl.sh/Readme.md |grep Features"
-        command = subprocess.Popen(testssl_check, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        command = subprocess.Popen("cat testssl.sh/Readme.md |grep Features", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, err = command.communicate()
         testssl_match = re.findall(testssl_version_pattern, str(output))
         print bcolors.OKBLUE + bcolors.BOLD + "Current Version: " + testssl_match[0] + bcolors.ENDC
