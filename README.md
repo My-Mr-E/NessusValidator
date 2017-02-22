@@ -23,13 +23,20 @@ Version 2.0 is a complete rewrite of the tool. List of changes are below,
 
 The following vulnerabilities are currently supported by validator:
 
-#### SMB Vulnerabilities:
+#### ESXi Vulnerabilities:
 
 * ESXi Version Based Vulnerabilities
 * Poodle
 * Guest Privesc
 * 5.5 RCE
 
+#### PHP Vulnerabilities:
+
+* RSHUTDOWN Auth Bypass
+* Unsupported version
+* String Query code execution
+* Double Conversion DOS
+* Multiple version based plugins
 
 #### SMB Vulnerabilities:
 
@@ -54,7 +61,8 @@ The following vulnerabilities are currently supported by validator:
 * CBC Mode Ciphers Enabled
 * Weak MAC Algorithms
 * Dropbear SSH Vulnerable Version
-* OpenSSH MaxAuthTries Bypass
+* Dropbear SSH UAF RCE
+* OpenSSH Multiple Plugins
 
 #### DNS Vulnerabilities:
 
@@ -85,6 +93,7 @@ The following vulnerabilities are currently supported by validator:
 * HTTP TRACE method enabled
 * Apache ETag Headers enabled ***Still testing***
 * Anonymous FTP Login
+* IPMI Hash Disclosure
 
 #### VNC Vulnerabilities:
 
@@ -161,6 +170,7 @@ The setup file will download TestSSL and rdp-sec-check and place them in the cor
 * cURL
 * Enum4linux
 * Metasploit
+* nikto
 
 
 **The tool is designed to run in Kali 2.0, as well as tested in Kali 2.0**

@@ -15,6 +15,22 @@ class bcolors:
 
 # Plugin Dictionary {Plugin{Regex,command}} key/(value,value) pairs
 pluginList = {
+    # PHP vulnerabilities
+    '48244': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Multiple Vulns
+    '51139': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Multiple Vulns 2
+    '39480': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Multiple Vulns 3
+    '41014': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Multiple Vulns 4
+    '43351': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Multiple Vulns 5
+    '35067': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Multiple Vulns 6
+    '35750': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Multiple Vulns 7
+    '58966': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Multiple Vulns 8
+    '44921': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Multiple Vulns 9
+    '57537': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Multiple Vulns 10
+    '35043': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Multiple Vulns 11
+    '73289': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Rshutdown Bypass
+    '58987': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Unsupported Version
+    '58988': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Query String CE
+    '51439': {'regex': 'PHP', 'command': "''nikto --host {1} --port {0} -maxtime {2}''"},  # PHP Dub Conversion DOS
 
     # NTP Vulnerabilities
     '71783': {'regex': '(Vulnerable)','command': "''msfconsole -q -x 'use auxiliary/scanner/ntp/ntp_monlist;set rhosts {1};color false;run;exit -y'''",'UDPcommand': "''msfconsole -q -x 'use auxiliary/scanner/ntp/ntp_monlist;set rhosts {1};color false;run;exit -y'''"},  # VNC Default Password 'password'
@@ -49,8 +65,36 @@ pluginList = {
     '90317': {'regex': 'arcfour','command':"''nmap --script=ssh2-enum-algos -p{0} {1} & sleep {2};kill $!''"},  # Weak SSH Algorithms
     '70658': {'regex': 'cbc','command':"''nmap --script=ssh2-enum-algos -p{0} {1} & sleep {2};kill $!''"},  # CBC Mode Ciphers Enabled
     '71049': {'regex': 'hmac','command':"''nmap --script=ssh2-enum-algos -p{0} {1} & sleep {2};kill $!''"},  # Weak MAC Algorithms Enabled
-    '93650': {'regex': 'dropbear', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"}, # DropBear SSH
+
+    ## Dropbear;
+    '93650': {'regex': 'dropbear', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"}, # DropBear SSH - Version Based
+    '70545': {'regex': 'dropbear', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"}, # DropBear SSH - Version Based 2
+    '58183': {'regex': 'dropbear', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"}, # DropBear SSH - UAF RCE
+
+    ## OpenSSH
     '86122': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH MaxAuthTries Bypass
+    '44076': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH SCP injection
+    '10802': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Multiple Flaws
+    '10823': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Multiple Vulnerabilities
+    '10883': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Off by 1 Privesc
+    '44072': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Netgroup Auth bypass
+    '11031': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Multiple overflows
+    '17702': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Multiple vulns 2
+    '11712': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Reverse DNS Bypass
+    '11837': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Multiple vulns 3
+    '44075': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Host info disclosure
+    '19592': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Multiple vulns 4
+    '44077': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Multiple vulns 5
+    '44078': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Cookie Bypass
+    '44079': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Force Command Bypass
+    '44065': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH CBC Disclosure
+    '10954': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Token Overflow
+    '44073': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH OpenPAM DOS
+    '31737': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH X11 Hijacking
+    '44080': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH X11 Forward Hijacking
+    '44074': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Portable Multiple Vulns
+    '53841': {'regex': 'OpenSSH', 'command': "''nmap -A -p{0} {1} & sleep {2};kill $!''"},  # OpenSSH Portable Info Disclosure
+
 
     # SSL/TLS Vulnerabilities
     '57582': {'regex': 'self-signed\s(\(NOT ok\))|NOT\sok\s(\(self signed\))|(self-signed)|self\ssigned|selfsigned','command':"''./testssl.sh/testssl.sh --quiet --color 0 -S {1}:{0} & sleep {2};kill $!''"},  # Self Signed Certificate
@@ -61,7 +105,7 @@ pluginList = {
     '89058': {'regex': '[vV][uU][lL][nN][eE][rR][aA][bB][lL][eE]\s(\(NOT\sok\))','command':"''./testssl.sh/testssl.sh --quiet --color 0 -D {1}:{0} & sleep {2};kill $!''"},  # SSL Drown
     '78479': {'regex': '[vV][uU][lL][nN][eE][rR][aA][bB][lL][eE]\s(\(NOT\sok\))','command':"''./testssl.sh/testssl.sh --quiet --color 0 -O {1}:{0} & sleep {2};kill $!''"},  # SSL Poodle
     '80035': {'regex': '[vV][uU][lL][nN][eE][rR][aA][bB][lL][eE]\s(\(NOT\sok\))','command':"''./testssl.sh/testssl.sh --quiet --color 0 -O {1}:{0} & sleep {2};kill $!''"},  # SSL Poodle 2
-    '35291': {'regex': 'SHA1\swith\sRSA','command':"''./testssl.sh/testssl.sh --quiet --color 0 -S {1}:{0} & sleep {2};kill $!''"},  # Weak Signature Algorithms
+    '35291': {'regex': 'SHA1\swith\sRSA|MD5|MD4|MD2','command':"''./testssl.sh/testssl.sh --quiet --color 0 -S {1}:{0} & sleep {2};kill $!''"},  # Weak Signature Algorithms
     '83738': {'regex': '[vV][uU][lL][nN][eE][rR][aA][bB][lL][eE]\s(\(NOT\sok\))','command':"''./testssl.sh/testssl.sh --quiet --color 0 -J {1}:{0} & sleep {2};kill $!''"},  # Logjam
     '83875': {'regex': '[vV][uU][lL][nN][eE][rR][aA][bB][lL][eE]\s(\(NOT\sok\))','command':"''./testssl.sh/testssl.sh --quiet --color 0 -J {1}:{0} & sleep {2};kill $!''"},  # Logjam 2
     '81606': {'regex': '[vV][uU][lL][nN][eE][rR][aA][bB][lL][eE]\s(\(NOT\sok\))','command':"''./testssl.sh/testssl.sh --quiet --color 0 -F {1}:{0} & sleep {2};kill $!''"},  # SSL Freak
@@ -74,14 +118,14 @@ pluginList = {
     '25220': {'regex': 'tcpts=([1-9][0-9]*)','command':"''hping3 {1} -p {0} -S --tcp-timestamp -c 1 & sleep {2};kill $!''"},  # TCP Timestamp Response
     '41028': {'regex': '[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}','command':"''onesixtyone {1} public & sleep {2};kill $!''",'UDPcommand': "''onesixtyone {1} public & sleep {2};kill $!''"},  # SNMP Public Community String
     '10264': {'regex': '[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}','command':"''onesixtyone {1} public & sleep {2};kill $!''",'UDPcommand': "''onesixtyone {1} public & sleep {2};kill $!''"},  # SNMP Public Community String 2
-
-    ## 11213 NEEDS REVIEW
-    '11213': {'regex': 'TRACE\sis\s(enabled)','command':"''nmap --script=http-trace -p{0} {1} & sleep {2};kill $!''"},  # HTTP TRACE
+    '80101': {'regex': '(Hash\sfound)','command': "''msfconsole -q -x 'use auxiliary/scanner/ipmi/ipmi_dumphashes;set rhosts {1};color false;run;exit -y'''"},# IPMI Hash disclosure
+    '11213': {'regex': 'TRACE\sis\s(enabled)', 'command': "''nmap --script=http-trace -p{0} {1} & sleep {2};kill $!''"}, # HTTP TRACE
+    ## 88098 NEEDS REVIEW
     '88098': {'regex': '[eE][tT]ag:','command':"''curl --insecure -I https://{0}:{1} & sleep {2};kill $!''"},  # Etag Headers Enabled
 }
 
 
-# Create an XML SubElement with sselected text inside
+# Create an XML SubElement with selected text inside
 def SubElementWithText(parent, tag, text):
     attrib = {}
     element = parent.makeelement(tag, attrib)
