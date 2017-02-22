@@ -27,7 +27,7 @@ def systemUpdate():
     print bcolors.OKGREEN + bcolors.BOLD + "Upgrades Completed..." + bcolors.ENDC
 
 def testSSL(testssl_version):
-    testssl_version_pattern = re.compile(r"Features\sin\s\[([0-9]{1}.[0-9]{1,2})")
+    testssl_version_pattern = re.compile(r"([0-9]{1}.[0-9]{1,2})")
     print bcolors.OKBLUE + bcolors.BOLD + 'Checking for TestSSL...' + bcolors.ENDC
     testssl_exist = os.system('ls|grep testssl.sh|wc -l')
     if testssl_exist == '0':
