@@ -43,6 +43,7 @@ def testSSL(testssl_version):
         if testssl_match[0] == testssl_version:
             print bcolors.OKGREEN + bcolors.BOLD + "Correct TestSSL Version exists..." + bcolors.ENDC
         else:
+            os.system('rm -r testssl.sh')
             print bcolors.OKBLUE + bcolors.BOLD + "Downloading Correct Version of TestSSL..." + bcolors.ENDC
             os.system("git clone https://github.com/p3rll/testssl.sh.git")
             print "TestSSL Download Completed..."
