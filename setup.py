@@ -29,8 +29,9 @@ def systemUpdate():
 def testSSL(testssl_version):
     testssl_version_pattern = re.compile(r"([0-9]{1}.[0-9]{1,2})")
     print bcolors.OKBLUE + bcolors.BOLD + 'Checking for TestSSL...' + bcolors.ENDC
-    testssl_exist = os.system('ls|grep testssl.sh|wc -l')
-    if testssl_exist == '0':
+    command = subprocess.Popen("ls|grep testssl.sh|wc -l", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    output, err = command.communicate()
+    if output == '0':
         print bcolors.OKBLUE + bcolors.BOLD + "Downloading Correct Version of TestSSL..." + bcolors.ENDC
         os.system("git clone https://github.com/p3rll/testssl.sh.git")
         print bcolors.OKGREEN + bcolors.BOLD + "TestSSL Download Completed..." + bcolors.ENDC
