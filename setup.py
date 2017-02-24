@@ -38,7 +38,7 @@ def testSSL(testssl_version):
         print bcolors.OKBLUE + bcolors.BOLD + "Checking TestSSL Version" + bcolors.ENDC
         command = subprocess.Popen("cat testssl.sh/Readme.md |grep Features", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         output, err = command.communicate()
-        testssl_match = re.findall(testssl_version_pattern, str(output))
+        testssl_match = re.findall(testssl_version_pattern, output)
         print bcolors.OKBLUE + bcolors.BOLD + "Current Version: " + testssl_match[0] + bcolors.ENDC
         if testssl_match[0] == testssl_version:
             print bcolors.OKGREEN + bcolors.BOLD + "Correct TestSSL Version exists..." + bcolors.ENDC
