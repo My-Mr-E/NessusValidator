@@ -118,7 +118,7 @@ pluginList = {
     '25220': {'regex': 'tcpts=([1-9][0-9]*)','command':"''hping3 {1} -p {0} -S --tcp-timestamp -c 1 & sleep {2};kill $!''"},  # TCP Timestamp Response
     '41028': {'regex': '[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}','command':"''onesixtyone {1} public & sleep {2};kill $!''",'UDPcommand': "''onesixtyone {1} public & sleep {2};kill $!''"},  # SNMP Public Community String
     '10264': {'regex': '[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}','command':"''onesixtyone {1} public & sleep {2};kill $!''",'UDPcommand': "''onesixtyone {1} public & sleep {2};kill $!''"},  # SNMP Public Community String 2
-    '80101': {'regex': '(Hash\sfound)','command': "''msfconsole -q -x 'use auxiliary/scanner/ipmi/ipmi_dumphashes;set rhosts {1};color false;run;exit -y'''"},# IPMI Hash disclosure
+    '80101': {'regex': '(Hash\sfound)','command': "''msfconsole -q -x 'use auxiliary/scanner/ipmi/ipmi_dumphashes;set rhosts {1};color false;run;exit -y'''",'UDPcommand': "''msfconsole -q -x 'use auxiliary/scanner/ipmi/ipmi_dumphashes;set rhosts {1};color false;run;exit -y'''"},# IPMI Hash disclosure
     '11213': {'regex': 'TRACE\sis\s(enabled)', 'command': "''nmap --script=http-trace -p{0} {1} & sleep {2};kill $!''"}, # HTTP TRACE
     ## 88098 NEEDS REVIEW
     '88098': {'regex': '[eE][tT]ag:','command':"''curl --insecure -I https://{0}:{1} & sleep {2};kill $!''"},  # Etag Headers Enabled
