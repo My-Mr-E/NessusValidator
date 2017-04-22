@@ -49,6 +49,7 @@ The following vulnerabilities are currently supported by validator:
 #### Microsoft Vulnerabilities:
 
 * MS08-067
+* MS17-010
 * Terminal Services MITM
 * Terminal Sevives Medium or Weak
 * Terminal Services not FIPS
