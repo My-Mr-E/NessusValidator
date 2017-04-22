@@ -56,6 +56,7 @@ pluginList = {
 
     # MS Vulnerabilities
     '34477': {'regex': '(VULNERABLE)\s','command':"''nmap --script=smb-vuln-ms08-067 -p{0} {1} & sleep {2};kill $!''"},  # MS08-067
+    '97833': {'regex': '(likely\sVULNERABLE)', 'command': "''msfconsole -q -x 'use auxiliary/scanner/smb/smb_ms17_010;set rhosts {1};color false;run;exit -y'''"}, # MS17-010
     '57690': {'regex': '(WEAK_RDP_ENCRYPTION_SUPPORTED)\s','command':"''perl rdp-sec-check/rdp-sec-check.pl {1} & sleep {2};kill $!''"},  # Terminal Services- Medium or Low
     '30218': {'regex': '(FIPS_SUPPORTED_BUT_NOT_MANDATED)\s','command': "''perl rdp-sec-check/rdp-sec-check.pl {1} & sleep {2};kill $!''"},# Not FIPS Compliant
     '13818': {'regex': '(SSL_SUPPORTED_BUT_NOT_MANDATED_MITM)\s','command': "''perl rdp-sec-check/rdp-sec-check.pl {1} & sleep {2};kill $!''"},  # Not FIPS Compliant
